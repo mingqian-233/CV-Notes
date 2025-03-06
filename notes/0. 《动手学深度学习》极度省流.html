@@ -1,0 +1,81 @@
+<h1 id="计算机视觉基础-极度省流版">计算机视觉基础-极度省流版</h1>
+<h2 id="来源d2l">来源：<a href="https://d2l.ai/">d2l</a></h2>
+<h3 id="卷积神经网络cnn">6. 卷积神经网络（CNN）</h3>
+<p>为了处理图片这种二维的这种有位置关系的数据，我们引入卷积层。卷积层对比起全连接层，filter（滤波器/卷积核）组成的卷积层可以处理二维的结构。滤波器在二维矩阵上以步幅（<strong>strides</strong>）滑动，每次滑动进行一次矩阵点乘得到一个数，输出一个新的矩阵。为了保持边缘像素不被丢失，我们在输入的边界周围填充（<strong>padding</strong>）上0。控制strides可以减少输出的高和宽，控制padding大小可以使得输入和输出具有相同的高和宽。步幅和填充也可以接受两个参数，一个是高度方向，一个是宽度方向。但一般会相等。
+以上是二维的情况，可以扩展到第三维：通道。输入通道是把输入分开为几个通道（如RGB），然后在不同的通道用filter的不同的通道处理。filter的个数可以自己决定（有多少个输出通道就有多少个），但每个filter的通道数必须与输入通道数相同。每个filter各自将自己的所有通道求和得到输出。
+卷积层之后一般接pooling（池化/汇聚）层，目的是让模型更关注“特征”本身而不是“特征在哪里，是不是高糊”。它的运算和filter的滑动一样，但是它的运算不是点乘，而是取最大值或者平均值。pooling层也有填充和步幅。在多通道上，pooling层对它们单独运算，互不相关。
+LeNet: 最早最简单的CNN模型。结构如下。 <img
+src="https://d2l.ai/_images/lenet.svg" alt="LeNet" /></p>
+<h3 id="现代卷积神经网络">7. 现代卷积神经网络</h3>
+<p><strong>AlexNet</strong>:
+加深了网络的层数，由五个卷积层、两个全连接隐藏层和一个全连接输出层组成并且用ReLU替换了sigmoid作为激活函数。最后全连接层参数巨大（接近1GB），当年的硬件条件需要跨GPU分解模型，但现在不需要。控制模型复杂度时，对比起LeNet用的权重衰减，AlexNex用了Dropout。喂数据时AlexNet用了翻转、裁切、变色等扩增数据。</p>
+<p><strong>VGG</strong>:
+思想是把一系列卷积层打包成块，开创了“积木式”的模型设计，方便重复调用增加深度。用多个小filter堆叠代替大filter，减少了参数量且增强了非线性能力。</p>
+<p><strong>NiN</strong>:
+创新点在于在每个卷积层后使用两个1*1卷积层形成mlpconv层（在不破坏空间结构的前提下类似全连接层的效果，跨通道整合信息）以及用GAP(global
+average
+pooling)取代最后的全连接层（GAP是将每个通道的特征图取平均得到一个长度为通道数的向量）</p>
+<p><strong>GoogLeNet</strong>:
+使用Inception块作为基本的卷积块，由四条并行路径组成；模型的Inception块之间穿插Pooling层来降维。最后仍然是使用GAP替代FC层。</p>
+<p><strong>ResNet</strong>: 把训练目标改为拟合出残差映射<span
+class="math inline"><em>f</em>(<em>x</em>) − <em>x</em></span>来使其更容易优化。同时可以使得正向传播的特征保留、反向传播的梯度无衰减传递。
+<img src="https://d2l.ai/_images/residual-block.svg" alt="ResNet" /></p>
+<p><strong>DenseNet</strong>: ResNet的本质是把目标函数<span
+class="math inline"><em>f</em></span>分解为一个简单的线性项和一个复杂的非线性项，即<span
+class="math inline"><em>f</em>(<em>x</em>) = <em>x</em> + <em>g</em>(<em>x</em>)</span>。DenseNet试图把<span
+class="math inline"><em>f</em></span>拓展为超过两部分的信息，用一个“接力”的方式不断把输出以一种“连接”的形式，传递给后来的层。这样设计会大大增强模型鲁棒性。</p>
+<pre><code>（假设有5层）
+层4输出 → 层5输入
+层3输出 → 层4输入 + 层5输入
+层2输出 → 层3输入 + 层4输入 + 层5输入
+层1输出 → 层2输出 + 层3输入 + 层4输入 + 层5输入</code></pre>
+<p>这样处理，通道数会一直增长，所以DenseNet用过渡层（1×1卷积降维、池化）缩小尺寸。其中池化运用平均，因为每个Dense
+Block中累计了以前的所有信息，平均池化可以保证过渡平稳。</p>
+<h3 id="计算机视觉">13.计算机视觉</h3>
+<p>图像增广：榨干数据集的剩余价值。对训练集，使用翻转和裁剪、改变颜色或者相结合的方式，提升其泛化能力。预测集不使用。</p>
+<p>微调：拿来别人的训练好的模型（参数），把输出层以外的学习率调低，根据需求改变输出数并把输出层的学习率调高。</p>
+<p>目标检测和边界框：略</p>
+<p>锚框（anchor
+box）：目标检测先采样大量区域，再判断区域内是否包含目标，从而能更准确预测目标。以每个像素为中心，生成多个缩放比和宽高比（aspect
+ratio）不同的边界框，这些边界框被称为锚框（anchor
+box）。交并比表示重合程度，即相交面积/相并面积。锚框会找到和自己交并比最高的配对。每个真实框找和自己匹配（阈值一般为0.5）的锚框匹配，一个锚框只能有一个真实框。预测时，用非极大值抑制（NMS）合并属于同一目标的类似的预测边界框。
+&gt;NMS：取出冗余的预测框，确保同一目标只由最精确的一个检测框表示。否则会被重复检测，生成杂乱的结果。</p>
+<p>多尺度目标检测：生成太多锚框是不现实的，所以在多尺度下（为了检测不同大中小的目标）生成多个均匀分布的、宽高比不同的锚框，再利用这些锚框进行多尺度检测。</p>
+<p>目标检测数据集：略</p>
+<p>单发多框检测（SSD）：单发指单次前向传播，多框指多个提前生成的锚框。分为类别预测层和边界框预测层。之后为了提高效率，连结多尺度的预测（通过相同的batch_size作为第一维连接，第二维为高×宽×通道数），通过高和宽减半块将输入特征图的高和宽减半（这会改变通道的数量），扩大每个单元在其输出特征图中的感受野。类别损失函数采用交叉熵损失，偏移量损失函数用<span
+class="math inline"><em>L</em><sub>1</sub></span>范数损失（差的绝对值）</p>
+<p><span style="color:red">R-CNN（region-based CNN/regions with CNN
+features）：</span></p>
+<ul>
+<li><p>基础的R-CNN：选择性搜索通过传统图像处理方法选取多个高质量的提议区域（region
+proposal），通常在多个尺度下选取，形状大小不同。将它们缩放后进入CNN提取特征（不要输出层），训练支持向量机（SVM）对提取到的特征进行分类，其中每一个SVM用于判断特征是否属于某类别。最后边界框回归预测真实边界框。这种方法效率低下，因为选择性搜索可能选出特别多的提议区域。</p></li>
+<li><p>Fast R-CNN：对每个region
+proposal，基础的R-CNN处理它们时，CNN的前向传播独立，不共享计算。但是这些区域经常重叠，重复计算造成了浪费。Fast
+R-CNN的改进是在整张图上进行CNN的前向传播，提取特征，然后和region
+proposals一起被塞进<strong>ROI
+Pooling</strong>层（用于将任意大小的候选区域缩放成固定尺寸，保留主要特征）。最后是全连接层，同样是分别处理位置偏移和分类（概率）误差。
+&gt;ROI Pooling：指定每个区域输出的高和宽分别为<span
+class="math inline"><em>h</em><sub>2</sub></span>和<span
+class="math inline"><em>w</em><sub>2</sub></span>。对于任何形状为 <span
+class="math inline"><em>h</em> × <em>w</em></span>
+的兴趣区域窗口，该窗口将被<strong>划分</strong>（<strong><em>即不再是卷积一样的滑动，而是单纯的分割</em></strong>）为
+<span
+class="math inline"><em>h</em><sub>2</sub> × <em>w</em><sub>2</sub></span>
+子窗口网格，其中每个子窗口的大小约为 <span
+class="math inline">$\frac{h}{h_2} \times
+\frac{w}{w_2}$</span>（优先向上取整）。</p></li>
+<li><p>Faster R-CNN：Fast R-CNN有一个劣势在于需要生成大量的region
+proposal减慢了效率。对比起Fast R-CNN，Faster
+R-CNN的唯一不同是把选择性搜索替换为区域提议网络（<strong>RPN</strong>），减少region
+proposal的生成数量。 <img src="https://d2l.ai/_images/faster-rcnn.svg"
+alt="Faster R-CNN" />
+&gt;RPN：用3*3卷积层(<em>padding=1</em>)处理CNN的输出，输出的通道数记为c，这样特征图中每个单元均得到一个长度为c的新特征。以特征图的每个像素为中心，自动生成并标注多个锚框。然后按照之前介绍的步骤进入类别预测和位置偏移预测（使用非极大值抑制移除相似的）</p></li>
+<li><p>Mask R-CNN：
+训练集如果标注了每个目标在图像上的像素级位置（像PS抠图抠出一整块像素然后知道这一片都是狗的那种）就可以利用这些信息提升目标检测精度。在Faster
+R-CNN的基础上，Mask R-CNN把ROI Pooling改为ROI
+align，利用双线性插值（bilinear
+interpolation）保留空间特征信息，更适合像素级预测。另外引入了全卷积层（FC）达成像素级的目标预测，后续会详细介绍FC。网络设计如下：
+<img src="https://d2l.ai/_images/mask-rcnn.svg" alt="Mask R-CNN" />
+&gt;双线性插值：通过周围四个已知点，在水平和垂直方向上分别进行线性插值，估算某一点。对比起ROI
+Pooling，它不进行向上取整，更能精确到像素。</p></li>
+</ul>
