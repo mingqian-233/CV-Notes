@@ -1,132 +1,1755 @@
-<!DOCTYPE html><html><head>
-      <title>0. 《动手学深度学习》极度省流</title>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-      
-      
-      
-      
-      
-      <style>
-      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
-/* Please visit the URL below for more information: */
-/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>0. 《动手学深度学习》极度省流</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      </style>
-      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function () {
-    // your code here
-  });
-</script></head><body for="html-export">
-    
-    
-      <div class="crossnote markdown-preview  ">
-      
-<h1 id="计算机视觉基础-极度省流版">计算机视觉基础-极度省流版 </h1>
-<h2 id="来源d2lhttpsd2lai">来源：<a href="https://d2l.ai/">d2l</a> </h2>
-<h3 id="6-卷积神经网络cnnlenet">6. 卷积神经网络（CNN，LeNet） </h3>
-<ul>
-<li>为了处理图片这种二维的这种有位置关系的数据，我们引入卷积层。卷积层对比起全连接层，filter（滤波器/卷积核）组成的卷积层可以处理二维的结构。滤波器在二维矩阵上以步幅（<strong>strides</strong>）滑动，每次滑动进行一次矩阵点乘得到一个数，输出一个新的矩阵。为了保持边缘像素不被丢失，我们在输入的边界周围填充（<strong>padding</strong>）上 0。控制 strides 可以减少输出的高和宽，控制 padding 大小可以使得输入和输出具有相同的高和宽。步幅和填充也可以接受两个参数，一个是高度方向，一个是宽度方向。但一般会相等。</li>
-<li>以上是二维的情况，可以扩展到第三维：通道。输入通道是把输入分开为几个通道（如 RGB），然后在不同的通道用 filter 的不同的通道处理。filter 的个数可以自己决定（有多少个输出通道就有多少个），但每个 filter 的通道数必须与输入通道数相同。每个 filter 各自将自己的所有通道求和得到输出。</li>
-<li>卷积层之后一般接 pooling（池化/汇聚）层，目的是让模型更关注“特征”本身而不是“特征在哪里，是不是高糊”。它的运算和 filter 的滑动一样，但是它的运算不是点乘，而是取最大值或者平均值。pooling 层也有填充和步幅。在多通道上，pooling 层对它们单独运算，互不相关。</li>
-<li>LeNet: 最早最简单的 CNN 模型。结构如下。<br>
-<img src="https://d2l.ai/_images/lenet.svg" alt="LeNet"></li>
-</ul>
-<h3 id="7-现代卷积神经网络">7. 现代卷积神经网络 </h3>
-<h4 id="alexnet">AlexNet </h4>
-<p>加深了网络的层数，由五个卷积层、两个全连接隐藏层和一个全连接输出层组成并且用 ReLU 替换了 sigmoid 作为激活函数。最后全连接层参数巨大（接近 1GB），当年的硬件条件需要跨 GPU 分解模型，但现在不需要。控制模型复杂度时，对比起 LeNet 用的权重衰减，AlexNex 用了 Dropout。喂数据时 AlexNet 用了翻转、裁切、变色等扩增数据。</p>
-<h4 id="vgg">VGG </h4>
-<p>思想是把一系列卷积层打包成块，开创了“积木式”的模型设计，方便重复调用增加深度。用多个小 filter 堆叠代替大 filter，减少了参数量且增强了非线性能力。</p>
-<h4 id="nin">NiN </h4>
-<p>创新点在于在每个卷积层后使用两个 1*1 卷积层形成 mlpconv 层（在不破坏空间结构的前提下类似全连接层的效果，跨通道整合信息）以及用 GAP(global average pooling)取代最后的全连接层（GAP 是将每个通道的特征图取平均得到一个长度为通道数的向量）</p>
-<h4 id="googlenet">GoogLeNet </h4>
-<p>使用 Inception 块作为基本的卷积块，由四条并行路径组成；模型的 Inception 块之间穿插 Pooling 层来降维。最后仍然是使用 GAP 替代 FC 层。</p>
-<h4 id="resnet">ResNet </h4>
-<p>把训练目标改为拟合出残差映射<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>−</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">f(x)-x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>来使其更容易优化。同时可以使得正向传播的特征保留、反向传播的梯度无衰减传递。<br>
-<img src="https://d2l.ai/_images/residual-block.svg" alt="ResNet"></p>
-<h4 id="densenet">DenseNet </h4>
-<p>ResNet 的本质是把目标函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>分解为一个简单的线性项和一个复杂的非线性项，即<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mi>x</mi><mo>+</mo><mi>g</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(x)=x+g(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span>。DenseNet 试图把<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>拓展为超过两部分的信息，用一个“接力”的方式不断把输出以一种“连接”的形式，传递给后来的层。这样设计会大大增强模型鲁棒性。</p>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>（假设有5层）
+    <link
+      rel="stylesheet"
+      href="file:///c:\Users\tomfa\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.15\crossnote\dependencies\katex\katex.min.css"
+    />
+
+    <style>
+      html body {
+        background-image: url("https://images.pexels.com/photos/29386479/pexels-photo-29386479.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        position: relative;
+      }
+      html body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: inherit;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        filter: blur(10px); /* 设置模糊效果 */
+        z-index: -2;
+      }
+      html body::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.5); /* 白色蒙版 */
+        z-index: -1;
+      }
+      code[class*="language-"],
+      pre[class*="language-"] {
+        color: #333;
+        background: 0 0;
+        font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        text-align: left;
+        white-space: pre;
+        word-spacing: normal;
+        word-break: normal;
+        word-wrap: normal;
+        line-height: 1.4;
+        -moz-tab-size: 8;
+        -o-tab-size: 8;
+        tab-size: 8;
+        -webkit-hyphens: none;
+        -moz-hyphens: none;
+        -ms-hyphens: none;
+        hyphens: none;
+      }
+      pre[class*="language-"] {
+        padding: 0.8em;
+        overflow: auto;
+        border-radius: 3px;
+        background: #f5f5f5;
+      }
+      :not(pre) > code[class*="language-"] {
+        padding: 0.1em;
+        border-radius: 0.3em;
+        white-space: normal;
+        background: #f5f5f5;
+      }
+      .token.blockquote,
+      .token.comment {
+        color: #969896;
+      }
+      .token.cdata {
+        color: #183691;
+      }
+      .token.doctype,
+      .token.macro.property,
+      .token.punctuation,
+      .token.variable {
+        color: #333;
+      }
+      .token.builtin,
+      .token.important,
+      .token.keyword,
+      .token.operator,
+      .token.rule {
+        color: #a71d5d;
+      }
+      .token.attr-value,
+      .token.regex,
+      .token.string,
+      .token.url {
+        color: #183691;
+      }
+      .token.atrule,
+      .token.boolean,
+      .token.code,
+      .token.command,
+      .token.constant,
+      .token.entity,
+      .token.number,
+      .token.property,
+      .token.symbol {
+        color: #0086b3;
+      }
+      .token.prolog,
+      .token.selector,
+      .token.tag {
+        color: #63a35c;
+      }
+      .token.attr-name,
+      .token.class,
+      .token.class-name,
+      .token.function,
+      .token.id,
+      .token.namespace,
+      .token.pseudo-class,
+      .token.pseudo-element,
+      .token.url-reference .token.variable {
+        color: #795da3;
+      }
+      .token.entity {
+        cursor: help;
+      }
+      .token.title,
+      .token.title .token.punctuation {
+        font-weight: 700;
+        color: #1d3e81;
+      }
+      .token.list {
+        color: #ed6a43;
+      }
+      .token.inserted {
+        background-color: #eaffea;
+        color: #55a532;
+      }
+      .token.deleted {
+        background-color: #ffecec;
+        color: #bd2c00;
+      }
+      .token.bold {
+        font-weight: 700;
+      }
+      .token.italic {
+        font-style: italic;
+      }
+      .language-json .token.property {
+        color: #183691;
+      }
+      .language-markup .token.tag .token.punctuation {
+        color: #333;
+      }
+      .language-css .token.function,
+      code.language-css {
+        color: #0086b3;
+      }
+      .language-yaml .token.atrule {
+        color: #63a35c;
+      }
+      code.language-yaml {
+        color: #183691;
+      }
+      .language-ruby .token.function {
+        color: #333;
+      }
+      .language-markdown .token.url {
+        color: #795da3;
+      }
+      .language-makefile .token.symbol {
+        color: #795da3;
+      }
+      .language-makefile .token.variable {
+        color: #183691;
+      }
+      .language-makefile .token.builtin {
+        color: #0086b3;
+      }
+      .language-bash .token.keyword {
+        color: #0086b3;
+      }
+      pre[data-line] {
+        position: relative;
+        padding: 1em 0 1em 3em;
+      }
+      pre[data-line] .line-highlight-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: transparent;
+        display: block;
+        width: 100%;
+      }
+      pre[data-line] .line-highlight {
+        position: absolute;
+        left: 0;
+        right: 0;
+        padding: inherit 0;
+        margin-top: 1em;
+        background: hsla(24, 20%, 50%, 0.08);
+        background: linear-gradient(
+          to right,
+          hsla(24, 20%, 50%, 0.1) 70%,
+          hsla(24, 20%, 50%, 0)
+        );
+        pointer-events: none;
+        line-height: inherit;
+        white-space: pre;
+      }
+      pre[data-line] .line-highlight:before,
+      pre[data-line] .line-highlight[data-end]:after {
+        content: attr(data-start);
+        position: absolute;
+        top: 0.4em;
+        left: 0.6em;
+        min-width: 1em;
+        padding: 0 0.5em;
+        background-color: hsla(24, 20%, 50%, 0.4);
+        color: #f4f1ef;
+        font: bold 65%/1.5 sans-serif;
+        text-align: center;
+        vertical-align: 0.3em;
+        border-radius: 999px;
+        text-shadow: none;
+        box-shadow: 0 1px #fff;
+      }
+      pre[data-line] .line-highlight[data-end]:after {
+        content: attr(data-end);
+        top: auto;
+        bottom: 0.4em;
+      }
+      html body {
+        font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans,
+          sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333;
+        background-color: #fff;
+        overflow: initial;
+        box-sizing: border-box;
+        word-wrap: break-word;
+      }
+      html body > :first-child {
+        margin-top: 0;
+      }
+      html body h1,
+      html body h2,
+      html body h3,
+      html body h4,
+      html body h5,
+      html body h6 {
+        line-height: 1.2;
+        margin-top: 1em;
+        margin-bottom: 16px;
+        color: #000;
+      }
+      html body h1 {
+        font-size: 2.25em;
+        font-weight: 300;
+        padding-bottom: 0.3em;
+      }
+      html body h2 {
+        font-size: 1.75em;
+        font-weight: 400;
+        padding-bottom: 0.3em;
+      }
+      html body h3 {
+        font-size: 1.5em;
+        font-weight: 500;
+      }
+      html body h4 {
+        font-size: 1.25em;
+        font-weight: 600;
+      }
+      html body h5 {
+        font-size: 1.1em;
+        font-weight: 600;
+      }
+      html body h6 {
+        font-size: 1em;
+        font-weight: 600;
+      }
+      html body h1,
+      html body h2,
+      html body h3,
+      html body h4,
+      html body h5 {
+        font-weight: 600;
+      }
+      html body h5 {
+        font-size: 1em;
+      }
+      html body h6 {
+        color: #5c5c5c;
+      }
+      html body strong {
+        color: #000;
+      }
+      html body del {
+        color: #5c5c5c;
+      }
+      html body a:not([href]) {
+        color: inherit;
+        text-decoration: none;
+      }
+      html body a {
+        color: #08c;
+        text-decoration: none;
+      }
+      html body a:hover {
+        color: #00a3f5;
+        text-decoration: none;
+      }
+      html body img {
+        max-width: 100%;
+      }
+      html body > p {
+        margin-top: 0;
+        margin-bottom: 16px;
+        word-wrap: break-word;
+      }
+      html body > ol,
+      html body > ul {
+        margin-bottom: 16px;
+      }
+      html body ol,
+      html body ul {
+        padding-left: 2em;
+      }
+      html body ol.no-list,
+      html body ul.no-list {
+        padding: 0;
+        list-style-type: none;
+      }
+      html body ol ol,
+      html body ol ul,
+      html body ul ol,
+      html body ul ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      html body li {
+        margin-bottom: 0;
+      }
+      html body li.task-list-item {
+        list-style: none;
+      }
+      html body li > p {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      html body .task-list-item-checkbox {
+        margin: 0 0.2em 0.25em -1.8em;
+        vertical-align: middle;
+      }
+      html body .task-list-item-checkbox:hover {
+        cursor: pointer;
+      }
+      html body blockquote {
+        margin: 16px 0;
+        font-size: inherit;
+        padding: 0 15px;
+        color: #5c5c5c;
+        background-color: #f0f0f0;
+        border-left: 4px solid #d6d6d6;
+      }
+      html body blockquote > :first-child {
+        margin-top: 0;
+      }
+      html body blockquote > :last-child {
+        margin-bottom: 0;
+      }
+      html body hr {
+        height: 4px;
+        margin: 32px 0;
+        background-color: #d6d6d6;
+        border: 0 none;
+      }
+      html body table {
+        margin: 10px 0 15px 0;
+        border-collapse: collapse;
+        border-spacing: 0;
+        display: block;
+        width: 100%;
+        overflow: auto;
+        word-break: normal;
+        word-break: keep-all;
+      }
+      html body table th {
+        font-weight: 700;
+        color: #000;
+      }
+      html body table td,
+      html body table th {
+        border: 1px solid #d6d6d6;
+        padding: 6px 13px;
+      }
+      html body dl {
+        padding: 0;
+      }
+      html body dl dt {
+        padding: 0;
+        margin-top: 16px;
+        font-size: 1em;
+        font-style: italic;
+        font-weight: 700;
+      }
+      html body dl dd {
+        padding: 0 16px;
+        margin-bottom: 16px;
+      }
+      html body code {
+        font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+        font-size: 0.85em;
+        color: #000;
+        background-color: #f0f0f0;
+        border-radius: 3px;
+        padding: 0.2em 0;
+      }
+      html body code::after,
+      html body code::before {
+        letter-spacing: -0.2em;
+        content: "\00a0";
+      }
+      html body pre > code {
+        padding: 0;
+        margin: 0;
+        word-break: normal;
+        white-space: pre;
+        background: 0 0;
+        border: 0;
+      }
+      html body .highlight {
+        margin-bottom: 16px;
+      }
+      html body .highlight pre,
+      html body pre {
+        padding: 1em;
+        overflow: auto;
+        line-height: 1.45;
+        border: #d6d6d6;
+        border-radius: 3px;
+      }
+      html body .highlight pre {
+        margin-bottom: 0;
+        word-break: normal;
+      }
+      html body pre code,
+      html body pre tt {
+        display: inline;
+        max-width: initial;
+        padding: 0;
+        margin: 0;
+        overflow: initial;
+        line-height: inherit;
+        word-wrap: normal;
+        background-color: transparent;
+        border: 0;
+      }
+      html body pre code:after,
+      html body pre code:before,
+      html body pre tt:after,
+      html body pre tt:before {
+        content: normal;
+      }
+      html body blockquote,
+      html body dl,
+      html body ol,
+      html body p,
+      html body pre,
+      html body ul {
+        margin-top: 0;
+        margin-bottom: 16px;
+      }
+      html body kbd {
+        color: #000;
+        border: 1px solid #d6d6d6;
+        border-bottom: 2px solid #c7c7c7;
+        padding: 2px 4px;
+        background-color: #f0f0f0;
+        border-radius: 3px;
+      }
+      @media print {
+        html body {
+          background-color: #fff;
+        }
+        html body h1,
+        html body h2,
+        html body h3,
+        html body h4,
+        html body h5,
+        html body h6 {
+          color: #000;
+          page-break-after: avoid;
+        }
+        html body blockquote {
+          color: #5c5c5c;
+        }
+        html body pre {
+          page-break-inside: avoid;
+        }
+        html body table {
+          display: table;
+        }
+        html body img {
+          display: block;
+          max-width: 100%;
+          max-height: 100%;
+        }
+        html body code,
+        html body pre {
+          word-wrap: break-word;
+          white-space: pre;
+        }
+      }
+      .markdown-preview {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      .markdown-preview ul {
+        list-style: disc;
+      }
+      .markdown-preview ul ul {
+        list-style: circle;
+      }
+      .markdown-preview ul ul ul {
+        list-style: square;
+      }
+      .markdown-preview ol {
+        list-style: decimal;
+      }
+      .markdown-preview ol ol,
+      .markdown-preview ul ol {
+        list-style-type: lower-roman;
+      }
+      .markdown-preview ol ol ol,
+      .markdown-preview ol ul ol,
+      .markdown-preview ul ol ol,
+      .markdown-preview ul ul ol {
+        list-style-type: lower-alpha;
+      }
+      .markdown-preview .newpage,
+      .markdown-preview .pagebreak {
+        page-break-before: always;
+      }
+      .markdown-preview pre.line-numbers {
+        position: relative;
+        padding-left: 3.8em;
+        counter-reset: linenumber;
+      }
+      .markdown-preview pre.line-numbers > code {
+        position: relative;
+      }
+      .markdown-preview pre.line-numbers .line-numbers-rows {
+        position: absolute;
+        pointer-events: none;
+        top: 1em;
+        font-size: 100%;
+        left: 0;
+        width: 3em;
+        letter-spacing: -1px;
+        border-right: 1px solid #999;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      .markdown-preview pre.line-numbers .line-numbers-rows > span {
+        pointer-events: none;
+        display: block;
+        counter-increment: linenumber;
+      }
+      .markdown-preview pre.line-numbers .line-numbers-rows > span:before {
+        content: counter(linenumber);
+        color: #999;
+        display: block;
+        padding-right: 0.8em;
+        text-align: right;
+      }
+      .markdown-preview .mathjax-exps .MathJax_Display {
+        text-align: center !important;
+      }
+      .markdown-preview:not([data-for="preview"])
+        .code-chunk
+        .code-chunk-btn-group {
+        display: none;
+      }
+      .markdown-preview:not([data-for="preview"]) .code-chunk .status {
+        display: none;
+      }
+      .markdown-preview:not([data-for="preview"]) .code-chunk .output-div {
+        margin-bottom: 16px;
+      }
+      .markdown-preview .md-toc {
+        padding: 0;
+      }
+      .markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link {
+        display: inline;
+        padding: 0.25rem 0;
+      }
+      .markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,
+      .markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p {
+        display: inline;
+      }
+      .markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link {
+        font-weight: 800;
+      }
+      .scrollbar-style::-webkit-scrollbar {
+        width: 8px;
+      }
+      .scrollbar-style::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: transparent;
+      }
+      .scrollbar-style::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: rgba(150, 150, 150, 0.66);
+        border: 4px solid rgba(150, 150, 150, 0.66);
+        background-clip: content-box;
+      }
+      html body[for="html-export"]:not([data-presentation-mode]) {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+      }
+      html
+        body[for="html-export"]:not([data-presentation-mode])
+        .markdown-preview {
+        position: relative;
+        top: 0;
+        min-height: 100vh;
+      }
+      @media screen and (min-width: 914px) {
+        html
+          body[for="html-export"]:not([data-presentation-mode])
+          .markdown-preview {
+          padding: 2em calc(50% - 457px + 2em);
+        }
+      }
+      @media screen and (max-width: 914px) {
+        html
+          body[for="html-export"]:not([data-presentation-mode])
+          .markdown-preview {
+          padding: 2em;
+        }
+      }
+      @media screen and (max-width: 450px) {
+        html
+          body[for="html-export"]:not([data-presentation-mode])
+          .markdown-preview {
+          font-size: 14px !important;
+          padding: 1em;
+        }
+      }
+      @media print {
+        html
+          body[for="html-export"]:not([data-presentation-mode])
+          #sidebar-toc-btn {
+          display: none;
+        }
+      }
+      html
+        body[for="html-export"]:not([data-presentation-mode])
+        #sidebar-toc-btn {
+        position: fixed;
+        bottom: 8px;
+        left: 8px;
+        font-size: 28px;
+        cursor: pointer;
+        color: inherit;
+        z-index: 99;
+        width: 32px;
+        text-align: center;
+        opacity: 0.4;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        #sidebar-toc-btn {
+        opacity: 1;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 300px;
+        height: 100%;
+        padding: 32px 0 48px 0;
+        font-size: 14px;
+        box-shadow: 0 0 4px rgba(150, 150, 150, 0.33);
+        box-sizing: border-box;
+        overflow: auto;
+        background-color: inherit;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc::-webkit-scrollbar {
+        width: 8px;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: transparent;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: rgba(150, 150, 150, 0.66);
+        border: 4px solid rgba(150, 150, 150, 0.66);
+        background-clip: content-box;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        a {
+        text-decoration: none;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        .md-toc {
+        padding: 0 16px;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        .md-toc
+        .md-toc-link-wrapper
+        .md-toc-link {
+        display: inline;
+        padding: 0.25rem 0;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        .md-toc
+        .md-toc-link-wrapper
+        .md-toc-link
+        div,
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        .md-toc
+        .md-toc-link-wrapper
+        .md-toc-link
+        p {
+        display: inline;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        .md-toc
+        .md-toc-link-wrapper.highlighted
+        .md-toc-link {
+        font-weight: 800;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .markdown-preview {
+        left: 300px;
+        width: calc(100% - 300px);
+        padding: 2em calc(50% - 457px - 300px / 2);
+        margin: 0;
+        box-sizing: border-box;
+      }
+      @media screen and (max-width: 1274px) {
+        html
+          body[for="html-export"]:not(
+            [data-presentation-mode]
+          )[html-show-sidebar-toc]
+          .markdown-preview {
+          padding: 2em;
+        }
+      }
+      @media screen and (max-width: 450px) {
+        html
+          body[for="html-export"]:not(
+            [data-presentation-mode]
+          )[html-show-sidebar-toc]
+          .markdown-preview {
+          width: 100%;
+        }
+      }
+      html
+        body[for="html-export"]:not([data-presentation-mode]):not(
+          [html-show-sidebar-toc]
+        )
+        .markdown-preview {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      html
+        body[for="html-export"]:not([data-presentation-mode]):not(
+          [html-show-sidebar-toc]
+        )
+        .md-sidebar-toc {
+        display: none;
+      }
+      /* Please visit the URL below for more information: */
+      /*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+    </style>
+    <!-- The content below will be included at the end of the <head> element. -->
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function () {
+        // your code here
+      });
+    </script>
+  </head>
+  <body for="html-export">
+    <div class="crossnote markdown-preview">
+      <h1 id="计算机视觉基础-极度省流版">计算机视觉基础-极度省流版</h1>
+      <h2 id="来源d2lhttpsd2lai">来源：<a href="https://d2l.ai/">d2l</a></h2>
+      <h3 id="6-卷积神经网络cnnlenet">6. 卷积神经网络（CNN，LeNet）</h3>
+      <ul>
+        <li>
+          为了处理图片这种二维的这种有位置关系的数据，我们引入卷积层。卷积层对比起全连接层，filter（滤波器/卷积核）组成的卷积层可以处理二维的结构。滤波器在二维矩阵上以步幅（<strong>strides</strong>）滑动，每次滑动进行一次矩阵点乘得到一个数，输出一个新的矩阵。为了保持边缘像素不被丢失，我们在输入的边界周围填充（<strong>padding</strong>）上
+          0。控制 strides 可以减少输出的高和宽，控制 padding
+          大小可以使得输入和输出具有相同的高和宽。步幅和填充也可以接受两个参数，一个是高度方向，一个是宽度方向。但一般会相等。
+        </li>
+        <li>
+          以上是二维的情况，可以扩展到第三维：通道。输入通道是把输入分开为几个通道（如
+          RGB），然后在不同的通道用 filter 的不同的通道处理。filter
+          的个数可以自己决定（有多少个输出通道就有多少个），但每个 filter
+          的通道数必须与输入通道数相同。每个 filter
+          各自将自己的所有通道求和得到输出。
+        </li>
+        <li>
+          卷积层之后一般接
+          pooling（池化/汇聚）层，目的是让模型更关注“特征”本身而不是“特征在哪里，是不是高糊”。它的运算和
+          filter
+          的滑动一样，但是它的运算不是点乘，而是取最大值或者平均值。pooling
+          层也有填充和步幅。在多通道上，pooling 层对它们单独运算，互不相关。
+        </li>
+        <li>
+          LeNet: 最早最简单的 CNN 模型。结构如下。<br />
+          <img src="https://d2l.ai/_images/lenet.svg" alt="LeNet" />
+        </li>
+      </ul>
+      <h3 id="7-现代卷积神经网络">7. 现代卷积神经网络</h3>
+      <h4 id="alexnet">AlexNet</h4>
+      <p>
+        加深了网络的层数，由五个卷积层、两个全连接隐藏层和一个全连接输出层组成并且用
+        ReLU 替换了 sigmoid 作为激活函数。最后全连接层参数巨大（接近
+        1GB），当年的硬件条件需要跨 GPU
+        分解模型，但现在不需要。控制模型复杂度时，对比起 LeNet
+        用的权重衰减，AlexNex 用了 Dropout。喂数据时 AlexNet
+        用了翻转、裁切、变色等扩增数据。
+      </p>
+      <h4 id="vgg">VGG</h4>
+      <p>
+        思想是把一系列卷积层打包成块，开创了“积木式”的模型设计，方便重复调用增加深度。用多个小
+        filter 堆叠代替大 filter，减少了参数量且增强了非线性能力。
+      </p>
+      <h4 id="nin">NiN</h4>
+      <p>
+        创新点在于在每个卷积层后使用两个 1*1 卷积层形成 mlpconv
+        层（在不破坏空间结构的前提下类似全连接层的效果，跨通道整合信息）以及用
+        GAP(global average pooling)取代最后的全连接层（GAP
+        是将每个通道的特征图取平均得到一个长度为通道数的向量）
+      </p>
+      <h4 id="googlenet">GoogLeNet</h4>
+      <p>
+        使用 Inception 块作为基本的卷积块，由四条并行路径组成；模型的 Inception
+        块之间穿插 Pooling 层来降维。最后仍然是使用 GAP 替代 FC 层。
+      </p>
+      <h4 id="resnet">ResNet</h4>
+      <p>
+        把训练目标改为拟合出残差映射<span class="katex"
+          ><span class="katex-mathml"
+            ><math xmlns="http://www.w3.org/1998/Math/MathML"
+              ><semantics
+                ><mrow
+                  ><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi
+                  ><mo stretchy="false">)</mo><mo>−</mo><mi>x</mi></mrow
+                ><annotation encoding="application/x-tex"
+                  >f(x)-x</annotation
+                ></semantics
+              ></math
+            ></span
+          ><span class="katex-html" aria-hidden="true"
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 1em; vertical-align: -0.25em"
+              ></span
+              ><span class="mord mathnormal" style="margin-right: 0.10764em"
+                >f</span
+              ><span class="mopen">(</span><span class="mord mathnormal">x</span
+              ><span class="mclose">)</span
+              ><span class="mspace" style="margin-right: 0.2222em"></span
+              ><span class="mbin">−</span
+              ><span class="mspace" style="margin-right: 0.2222em"></span></span
+            ><span class="base"
+              ><span class="strut" style="height: 0.4306em"></span
+              ><span class="mord mathnormal">x</span></span
+            ></span
+          ></span
+        >来使其更容易优化。同时可以使得正向传播的特征保留、反向传播的梯度无衰减传递。<br />
+        <img src="https://d2l.ai/_images/residual-block.svg" alt="ResNet" />
+      </p>
+      <h4 id="densenet">DenseNet</h4>
+      <p>
+        ResNet 的本质是把目标函数<span class="katex"
+          ><span class="katex-mathml"
+            ><math xmlns="http://www.w3.org/1998/Math/MathML"
+              ><semantics
+                ><mrow><mi>f</mi></mrow
+                ><annotation encoding="application/x-tex"
+                  >f</annotation
+                ></semantics
+              ></math
+            ></span
+          ><span class="katex-html" aria-hidden="true"
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 0.8889em; vertical-align: -0.1944em"
+              ></span
+              ><span class="mord mathnormal" style="margin-right: 0.10764em"
+                >f</span
+              ></span
+            ></span
+          ></span
+        >分解为一个简单的线性项和一个复杂的非线性项，即<span class="katex"
+          ><span class="katex-mathml"
+            ><math xmlns="http://www.w3.org/1998/Math/MathML"
+              ><semantics
+                ><mrow
+                  ><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi
+                  ><mo stretchy="false">)</mo><mo>=</mo><mi>x</mi><mo>+</mo
+                  ><mi>g</mi><mo stretchy="false">(</mo><mi>x</mi
+                  ><mo stretchy="false">)</mo></mrow
+                ><annotation encoding="application/x-tex"
+                  >f(x)=x+g(x)</annotation
+                ></semantics
+              ></math
+            ></span
+          ><span class="katex-html" aria-hidden="true"
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 1em; vertical-align: -0.25em"
+              ></span
+              ><span class="mord mathnormal" style="margin-right: 0.10764em"
+                >f</span
+              ><span class="mopen">(</span><span class="mord mathnormal">x</span
+              ><span class="mclose">)</span
+              ><span class="mspace" style="margin-right: 0.2778em"></span
+              ><span class="mrel">=</span
+              ><span class="mspace" style="margin-right: 0.2778em"></span></span
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 0.6667em; vertical-align: -0.0833em"
+              ></span
+              ><span class="mord mathnormal">x</span
+              ><span class="mspace" style="margin-right: 0.2222em"></span
+              ><span class="mbin">+</span
+              ><span class="mspace" style="margin-right: 0.2222em"></span></span
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 1em; vertical-align: -0.25em"
+              ></span
+              ><span class="mord mathnormal" style="margin-right: 0.03588em"
+                >g</span
+              ><span class="mopen">(</span><span class="mord mathnormal">x</span
+              ><span class="mclose">)</span></span
+            ></span
+          ></span
+        >。DenseNet 试图把<span class="katex"
+          ><span class="katex-mathml"
+            ><math xmlns="http://www.w3.org/1998/Math/MathML"
+              ><semantics
+                ><mrow><mi>f</mi></mrow
+                ><annotation encoding="application/x-tex"
+                  >f</annotation
+                ></semantics
+              ></math
+            ></span
+          ><span class="katex-html" aria-hidden="true"
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 0.8889em; vertical-align: -0.1944em"
+              ></span
+              ><span class="mord mathnormal" style="margin-right: 0.10764em"
+                >f</span
+              ></span
+            ></span
+          ></span
+        >拓展为超过两部分的信息，用一个“接力”的方式不断把输出以一种“连接”的形式，传递给后来的层。这样设计会大大增强模型鲁棒性。
+      </p>
+      <pre
+        data-role="codeBlock"
+        data-info=""
+        class="language-text"
+      ><code>（假设有5层）
 层4输出 → 层5输入
 层3输出 → 层4输入 + 层5输入
 层2输出 → 层3输入 + 层4输入 + 层5输入
 层1输出 → 层2输出 + 层3输入 + 层4输入 + 层5输入
-</code></pre><p>这样处理，通道数会一直增长，所以 DenseNet 需要用过渡层（1×1 卷积降维、池化）缩小尺寸。其中池化运用平均，因为每个 Dense Block 中累计了以前的所有信息，平均池化可以保证过渡平稳。</p>
-<h3 id="13计算机视觉">13.计算机视觉 </h3>
-<h4 id="图像增广">图像增广 </h4>
-<p>榨干数据集的剩余价值。对训练集，使用翻转和裁剪、改变颜色或者相结合的方式，提升其泛化能力。预测集不使用。</p>
-<h4 id="微调">微调 </h4>
-<p>拿来别人的训练好的模型（参数），把输出层以外的学习率调低，根据需求改变输出数并把输出层的学习率调高。</p>
-<h4 id="目标检测和边界框">目标检测和边界框 </h4>
-<p>略</p>
-<h4 id="锚框anchor-box">锚框（anchor box） </h4>
-<p>目标检测先采样大量区域，再判断区域内是否包含目标，从而能更准确预测目标。以每个像素为中心，生成多个缩放比和宽高比（aspect ratio）不同的边界框，这些边界框被称为锚框（anchor box）。交并比表示重合程度，即相交面积/相并面积。锚框会找到和自己交并比最高的配对。每个真实框找和自己匹配（阈值一般为 0.5）的锚框匹配，一个锚框只能有一个真实框。预测时，用非极大值抑制（NMS）合并属于同一目标的类似的预测边界框。</p>
-<blockquote>
-<p>NMS：取出冗余的预测框，确保同一目标只由最精确的一个检测框表示。否则会被重复检测，生成杂乱的结果。</p>
-</blockquote>
-<h4 id="多尺度目标检测">多尺度目标检测 </h4>
-<p>生成太多锚框是不现实的，所以在多尺度下（为了检测不同大中小的目标）生成多个均匀分布的、宽高比不同的锚框，再利用这些锚框进行多尺度检测。</p>
-<h4 id="目标检测数据集">目标检测数据集 </h4>
-<p>略</p>
-<h4 id="单发多框检测ssd">单发多框检测（SSD） </h4>
-<p>单发指单次前向传播，多框指多个提前生成的锚框。分为类别预测层和边界框预测层。之后为了提高效率，连结多尺度的预测（通过相同的 batch_size 作为第一维连接，第二维为高 × 宽 × 通道数），通过高和宽减半块将输入特征图的高和宽减半（这会改变通道的数量），扩大每个单元在其输出特征图中的感受野。类别损失函数采用交叉熵损失，偏移量损失函数用<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">L_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>范数损失（差的绝对值）</p>
-<h4 id="r-cnnregion-based-cnnregions-with-cnn-features系列">R-CNN（region-based CNN/regions with CNN features）系列 </h4>
-<ul>
-<li>
-<p><strong>基础的 R-CNN</strong><br>
-选择性搜索通过传统图像处理方法选取多个高质量的提议区域（region proposal），通常在多个尺度下选取，形状大小不同。将它们缩放后进入 CNN 提取特征（不要输出层），训练支持向量机（SVM）对提取到的特征进行分类，其中每一个 SVM 用于判断特征是否属于某类别。最后边界框回归预测真实边界框。这种方法效率低下，因为选择性搜索可能选出特别多的提议区域。</p>
-</li>
-<li>
-<p><strong>Fast R-CNN</strong><br>
-对每个 region proposal，基础的 R-CNN 处理它们时，CNN 的前向传播独立，不共享计算。但是这些区域经常重叠，重复计算造成了浪费。Fast R-CNN 的改进是在整张图上进行 CNN 的前向传播，提取特征，然后和 region proposals 一起被塞进<strong>ROI Pooling</strong>层（用于将任意大小的候选区域缩放成固定尺寸，保留主要特征）。最后是全连接层，同样是分别处理位置偏移和分类（概率）误差。</p>
-<blockquote>
-<p>ROI Pooling：指定每个区域输出的高和宽分别为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">h_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">w_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。对于任何形状为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>×</mo><mi>w</mi></mrow><annotation encoding="application/x-tex">h \times w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">h</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span> 的兴趣区域窗口，该窗口将被<strong>划分</strong>（<strong><em>即不再是卷积一样的滑动，而是单纯的分割</em></strong>）为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mn>2</mn></msub><mo>×</mo><msub><mi>w</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">h_2 \times w_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 子窗口网格，其中每个子窗口的大小约为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>h</mi><msub><mi>h</mi><mn>2</mn></msub></mfrac><mo>×</mo><mfrac><mi>w</mi><msub><mi>w</mi><mn>2</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">\frac{h}{h_2} \times \frac{w}{w_2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3252em;vertical-align:-0.4451em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8801em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3173em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">h</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4451em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1405em;vertical-align:-0.4451em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6954em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3173em;"><span style="top:-2.357em;margin-left:-0.0269em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4451em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>（优先向上取整）。</p>
-</blockquote>
-</li>
-<li>
-<p><strong>Faster R-CNN</strong><br>
-Fast R-CNN 有一个劣势在于需要生成大量的 region proposal 减慢了效率。对比起 Fast R-CNN，Faster R-CNN 的唯一不同是把选择性搜索替换为区域提议网络（<strong>RPN</strong>），减少 region proposal 的生成数量。<br>
-<img src="https://d2l.ai/_images/faster-rcnn.svg" alt="Faster R-CNN"></p>
-<blockquote>
-<p>RPN：用 3*3 卷积层(<em>padding=1</em>)处理 CNN 的输出，输出的通道数记为 c，这样特征图中每个单元均得到一个长度为 c 的新特征。以特征图的每个像素为中心，自动生成并标注多个锚框。然后按照之前介绍的步骤进入类别预测和位置偏移预测（使用非极大值抑制移除相似的）</p>
-</blockquote>
-</li>
-<li>
-<p><strong>Mask R-CNN</strong><br>
-训练集如果标注了每个目标在图像上的像素级位置（像 PS 抠图抠出一整块像素然后知道这一片都是狗的那种）就可以利用这些信息提升目标检测精度。在 Faster R-CNN 的基础上，Mask R-CNN 把 ROI Pooling 改为 ROI align，利用双线性插值（bilinear interpolation）保留空间特征信息，更适合像素级预测。另外引入了全卷积层（FC）达成像素级的目标预测，后续会详细介绍 FC。网络设计如下：<br>
-<img src="https://d2l.ai/_images/mask-rcnn.svg" alt="Mask R-CNN"></p>
-<blockquote>
-<p>双线性插值：通过周围四个已知点，在水平和垂直方向上分别进行线性插值，估算某一点。对比起 ROI Pooling，它不进行向上取整，更能精确到像素。</p>
-</blockquote>
-</li>
-</ul>
-<h4 id="转置卷积transposed-convolution">转置卷积（Transposed Convolution） </h4>
-<p>前面的这些 CNN 相关的 layer 全部都是把数据降维或者不变的。但是语义分割任务需要将每个像素分配到一个类别，保持输出和输出的空间维度一致会更方便，因此引入一个可以升维的层——转置卷积（Transposed Convolution）层。<br>
-ConvTranspose 层类似于可以放大细节的放大镜。细节如下：</p>
-<ul>
-<li>输入通过 kernel 的时候，每一个元素广播后和 kernel 相乘，形成一个小矩阵，每一个小矩阵通过下面的 padding 和 stride 的控制相加形成结果的大矩阵</li>
-<li>参数有 padding 和 stride，都用于输出（常规的是用于输入的）</li>
-<li>padding 指裁剪掉输出周围的多少层，stride 指在卷积过程中，输入和 kernel 相乘之后得到的小矩阵的滑动步幅。步幅作用如图：<br>
-<img src="https://d2l.ai/_images/trans_conv_stride2.svg" alt="stride"></li>
-<li>“转置”名称的由来，是因为普通卷积可以看待为矩阵乘法<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">y</mi><mo>=</mo><mi mathvariant="bold">W</mi><mi mathvariant="bold">x</mi></mrow><annotation encoding="application/x-tex">\mathbf{y}=\mathbf{W}\mathbf{x}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6389em;vertical-align:-0.1944em;"></span><span class="mord mathbf" style="margin-right:0.01597em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf">Wx</span></span></span></span>，反向传播函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">∇</mi><mi mathvariant="bold">x</mi></msub><mi mathvariant="bold">y</mi><mo>=</mo><msup><mi mathvariant="bold">W</mi><mi mathvariant="normal">⊤</mi></msup></mrow><annotation encoding="application/x-tex">\nabla_{\mathbf{x}}\mathbf{y}=\mathbf{W}^\top</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord">∇</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1611em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathbf mtight">x</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathbf" style="margin-right:0.01597em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathbf" style="margin-right:0.01597em;">W</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span></span></span></span>；而转置卷积层的作用类似于把上述操作调转，正向传播与<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="bold">W</mi><mi mathvariant="normal">⊤</mi></msup></mrow><annotation encoding="application/x-tex">\mathbf{W}^\top</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathbf" style="margin-right:0.01597em;">W</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span></span></span></span>相乘，因此得名。</li>
-</ul>
-<h4 id="全卷积网络fcn">全卷积网络（FCN） </h4>
-<p>因为 FCN 的输出结果是对每一个像素的预测，所以需要将中间层特征图的高和宽变成输入图像的尺寸，由上述的 ConvTranspose 实现。<br>
-首先用常规的卷积神经网络提取图像特征（不要池化层、输出层），然后用 1*1 的卷积层转换通道数（为分类数）。最后需要通过转置卷积层把特征图放大。<br>
-训练前用提取到的特征初始化 ConvTranspose 层（<em>假如随机初始化会浪费大量训练资源</em>），需要把下采样得到的特征图放大，即 upsampling，可以使用上面提到过的双线性插值。</p>
-<h4 id="风格迁移">风格迁移 </h4>
-<p>略</p>
-
-      </div>
-      
-      
-    
-    
-    
-    
-    
-    
-  
-    </body></html>
+</code></pre>
+      <p>
+        这样处理，通道数会一直增长，所以 DenseNet 需要用过渡层（1×1
+        卷积降维、池化）缩小尺寸。其中池化运用平均，因为每个 Dense Block
+        中累计了以前的所有信息，平均池化可以保证过渡平稳。
+      </p>
+      <h3 id="13计算机视觉">13.计算机视觉</h3>
+      <h4 id="图像增广">图像增广</h4>
+      <p>
+        榨干数据集的剩余价值。对训练集，使用翻转和裁剪、改变颜色或者相结合的方式，提升其泛化能力。预测集不使用。
+      </p>
+      <h4 id="微调">微调</h4>
+      <p>
+        拿来别人的训练好的模型（参数），把输出层以外的学习率调低，根据需求改变输出数并把输出层的学习率调高。
+      </p>
+      <h4 id="目标检测和边界框">目标检测和边界框</h4>
+      <p>略</p>
+      <h4 id="锚框anchor-box">锚框（anchor box）</h4>
+      <p>
+        目标检测先采样大量区域，再判断区域内是否包含目标，从而能更准确预测目标。以每个像素为中心，生成多个缩放比和宽高比（aspect
+        ratio）不同的边界框，这些边界框被称为锚框（anchor
+        box）。交并比表示重合程度，即相交面积/相并面积。锚框会找到和自己交并比最高的配对。每个真实框找和自己匹配（阈值一般为
+        0.5）的锚框匹配，一个锚框只能有一个真实框。预测时，用非极大值抑制（NMS）合并属于同一目标的类似的预测边界框。
+      </p>
+      <blockquote>
+        <p>
+          NMS：取出冗余的预测框，确保同一目标只由最精确的一个检测框表示。否则会被重复检测，生成杂乱的结果。
+        </p>
+      </blockquote>
+      <h4 id="多尺度目标检测">多尺度目标检测</h4>
+      <p>
+        生成太多锚框是不现实的，所以在多尺度下（为了检测不同大中小的目标）生成多个均匀分布的、宽高比不同的锚框，再利用这些锚框进行多尺度检测。
+      </p>
+      <h4 id="目标检测数据集">目标检测数据集</h4>
+      <p>略</p>
+      <h4 id="单发多框检测ssd">单发多框检测（SSD）</h4>
+      <p>
+        单发指单次前向传播，多框指多个提前生成的锚框。分为类别预测层和边界框预测层。之后为了提高效率，连结多尺度的预测（通过相同的
+        batch_size 作为第一维连接，第二维为高 × 宽 ×
+        通道数），通过高和宽减半块将输入特征图的高和宽减半（这会改变通道的数量），扩大每个单元在其输出特征图中的感受野。类别损失函数采用交叉熵损失，偏移量损失函数用<span
+          class="katex"
+          ><span class="katex-mathml"
+            ><math xmlns="http://www.w3.org/1998/Math/MathML"
+              ><semantics
+                ><mrow
+                  ><msub><mi>L</mi><mn>1</mn></msub></mrow
+                ><annotation encoding="application/x-tex"
+                  >L_1</annotation
+                ></semantics
+              ></math
+            ></span
+          ><span class="katex-html" aria-hidden="true"
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 0.8333em; vertical-align: -0.15em"
+              ></span
+              ><span class="mord"
+                ><span class="mord mathnormal">L</span
+                ><span class="msupsub"
+                  ><span class="vlist-t vlist-t2"
+                    ><span class="vlist-r"
+                      ><span class="vlist" style="height: 0.3011em"
+                        ><span
+                          style="
+                            top: -2.55em;
+                            margin-left: 0em;
+                            margin-right: 0.05em;
+                          "
+                          ><span class="pstrut" style="height: 2.7em"></span
+                          ><span class="sizing reset-size6 size3 mtight"
+                            ><span class="mord mtight">1</span></span
+                          ></span
+                        ></span
+                      ><span class="vlist-s">​</span></span
+                    ><span class="vlist-r"
+                      ><span class="vlist" style="height: 0.15em"
+                        ><span></span></span></span></span></span></span></span></span></span
+        >范数损失（差的绝对值）
+      </p>
+      <h4 id="r-cnnregion-based-cnnregions-with-cnn-features系列">
+        R-CNN（region-based CNN/regions with CNN features）系列
+      </h4>
+      <ul>
+        <li>
+          <p>
+            <strong>基础的 R-CNN</strong><br />
+            选择性搜索通过传统图像处理方法选取多个高质量的提议区域（region
+            proposal），通常在多个尺度下选取，形状大小不同。将它们缩放后进入 CNN
+            提取特征（不要输出层），训练支持向量机（SVM）对提取到的特征进行分类，其中每一个
+            SVM
+            用于判断特征是否属于某类别。最后边界框回归预测真实边界框。这种方法效率低下，因为选择性搜索可能选出特别多的提议区域。
+          </p>
+        </li>
+        <li>
+          <p>
+            <strong>Fast R-CNN</strong><br />
+            对每个 region proposal，基础的 R-CNN 处理它们时，CNN
+            的前向传播独立，不共享计算。但是这些区域经常重叠，重复计算造成了浪费。Fast
+            R-CNN 的改进是在整张图上进行 CNN 的前向传播，提取特征，然后和 region
+            proposals 一起被塞进<strong>ROI Pooling</strong
+            >层（用于将任意大小的候选区域缩放成固定尺寸，保留主要特征）。最后是全连接层，同样是分别处理位置偏移和分类（概率）误差。
+          </p>
+          <blockquote>
+            <p>
+              ROI Pooling：指定每个区域输出的高和宽分别为<span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><msub><mi>h</mi><mn>2</mn></msub></mrow
+                      ><annotation encoding="application/x-tex"
+                        >h_2</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 0.8444em; vertical-align: -0.15em"
+                    ></span
+                    ><span class="mord"
+                      ><span class="mord mathnormal">h</span
+                      ><span class="msupsub"
+                        ><span class="vlist-t vlist-t2"
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.3011em"
+                              ><span
+                                style="
+                                  top: -2.55em;
+                                  margin-left: 0em;
+                                  margin-right: 0.05em;
+                                "
+                                ><span
+                                  class="pstrut"
+                                  style="height: 2.7em"
+                                ></span
+                                ><span class="sizing reset-size6 size3 mtight"
+                                  ><span class="mord mtight">2</span></span
+                                ></span
+                              ></span
+                            ><span class="vlist-s">​</span></span
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.15em"
+                              ><span></span></span></span></span></span></span></span></span></span
+              >和<span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><msub><mi>w</mi><mn>2</mn></msub></mrow
+                      ><annotation encoding="application/x-tex"
+                        >w_2</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 0.5806em; vertical-align: -0.15em"
+                    ></span
+                    ><span class="mord"
+                      ><span
+                        class="mord mathnormal"
+                        style="margin-right: 0.02691em"
+                        >w</span
+                      ><span class="msupsub"
+                        ><span class="vlist-t vlist-t2"
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.3011em"
+                              ><span
+                                style="
+                                  top: -2.55em;
+                                  margin-left: -0.0269em;
+                                  margin-right: 0.05em;
+                                "
+                                ><span
+                                  class="pstrut"
+                                  style="height: 2.7em"
+                                ></span
+                                ><span class="sizing reset-size6 size3 mtight"
+                                  ><span class="mord mtight">2</span></span
+                                ></span
+                              ></span
+                            ><span class="vlist-s">​</span></span
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.15em"
+                              ><span></span></span></span></span></span></span></span></span></span
+              >。对于任何形状为
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow><mi>h</mi><mo>×</mo><mi>w</mi></mrow
+                      ><annotation encoding="application/x-tex"
+                        >h \times w</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 0.7778em; vertical-align: -0.0833em"
+                    ></span
+                    ><span class="mord mathnormal">h</span
+                    ><span class="mspace" style="margin-right: 0.2222em"></span
+                    ><span class="mbin">×</span
+                    ><span
+                      class="mspace"
+                      style="margin-right: 0.2222em"
+                    ></span></span
+                  ><span class="base"
+                    ><span class="strut" style="height: 0.4306em"></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.02691em"
+                      >w</span
+                    ></span
+                  ></span
+                ></span
+              >
+              的兴趣区域窗口，该窗口将被<strong>划分</strong>（<strong
+                ><em>即不再是卷积一样的滑动，而是单纯的分割</em></strong
+              >）为
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><msub><mi>h</mi><mn>2</mn></msub
+                        ><mo>×</mo><msub><mi>w</mi><mn>2</mn></msub></mrow
+                      ><annotation encoding="application/x-tex"
+                        >h_2 \times w_2</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 0.8444em; vertical-align: -0.15em"
+                    ></span
+                    ><span class="mord"
+                      ><span class="mord mathnormal">h</span
+                      ><span class="msupsub"
+                        ><span class="vlist-t vlist-t2"
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.3011em"
+                              ><span
+                                style="
+                                  top: -2.55em;
+                                  margin-left: 0em;
+                                  margin-right: 0.05em;
+                                "
+                                ><span
+                                  class="pstrut"
+                                  style="height: 2.7em"
+                                ></span
+                                ><span class="sizing reset-size6 size3 mtight"
+                                  ><span class="mord mtight">2</span></span
+                                ></span
+                              ></span
+                            ><span class="vlist-s">​</span></span
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.15em"
+                              ><span></span></span></span></span></span></span
+                    ><span class="mspace" style="margin-right: 0.2222em"></span
+                    ><span class="mbin">×</span
+                    ><span
+                      class="mspace"
+                      style="margin-right: 0.2222em"
+                    ></span></span
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 0.5806em; vertical-align: -0.15em"
+                    ></span
+                    ><span class="mord"
+                      ><span
+                        class="mord mathnormal"
+                        style="margin-right: 0.02691em"
+                        >w</span
+                      ><span class="msupsub"
+                        ><span class="vlist-t vlist-t2"
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.3011em"
+                              ><span
+                                style="
+                                  top: -2.55em;
+                                  margin-left: -0.0269em;
+                                  margin-right: 0.05em;
+                                "
+                                ><span
+                                  class="pstrut"
+                                  style="height: 2.7em"
+                                ></span
+                                ><span class="sizing reset-size6 size3 mtight"
+                                  ><span class="mord mtight">2</span></span
+                                ></span
+                              ></span
+                            ><span class="vlist-s">​</span></span
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.15em"
+                              ><span></span></span></span></span></span></span></span></span
+              ></span>
+              子窗口网格，其中每个子窗口的大小约为
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><mfrac
+                          ><mi>h</mi><msub><mi>h</mi><mn>2</mn></msub></mfrac
+                        ><mo>×</mo
+                        ><mfrac
+                          ><mi>w</mi><msub><mi>w</mi><mn>2</mn></msub></mfrac
+                        ></mrow
+                      ><annotation encoding="application/x-tex"
+                        >\frac{h}{h_2} \times \frac{w}{w_2}</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1.3252em; vertical-align: -0.4451em"
+                    ></span
+                    ><span class="mord"
+                      ><span class="mopen nulldelimiter"></span
+                      ><span class="mfrac"
+                        ><span class="vlist-t vlist-t2"
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.8801em"
+                              ><span style="top: -2.655em"
+                                ><span class="pstrut" style="height: 3em"></span
+                                ><span class="sizing reset-size6 size3 mtight"
+                                  ><span class="mord mtight"
+                                    ><span class="mord mtight"
+                                      ><span class="mord mathnormal mtight"
+                                        >h</span
+                                      ><span class="msupsub"
+                                        ><span class="vlist-t vlist-t2"
+                                          ><span class="vlist-r"
+                                            ><span
+                                              class="vlist"
+                                              style="height: 0.3173em"
+                                              ><span
+                                                style="
+                                                  top: -2.357em;
+                                                  margin-left: 0em;
+                                                  margin-right: 0.0714em;
+                                                "
+                                                ><span
+                                                  class="pstrut"
+                                                  style="height: 2.5em"
+                                                ></span
+                                                ><span
+                                                  class="sizing reset-size3 size1 mtight"
+                                                  ><span class="mord mtight"
+                                                    >2</span
+                                                  ></span
+                                                ></span
+                                              ></span
+                                            ><span class="vlist-s"
+                                              >​</span
+                                            ></span
+                                          ><span class="vlist-r"
+                                            ><span
+                                              class="vlist"
+                                              style="height: 0.143em"
+                                              ><span></span></span></span></span></span></span></span></span></span
+                              ><span style="top: -3.23em"
+                                ><span class="pstrut" style="height: 3em"></span
+                                ><span
+                                  class="frac-line"
+                                  style="border-bottom-width: 0.04em"
+                                ></span></span
+                              ><span style="top: -3.394em"
+                                ><span class="pstrut" style="height: 3em"></span
+                                ><span class="sizing reset-size6 size3 mtight"
+                                  ><span class="mord mtight"
+                                    ><span class="mord mathnormal mtight"
+                                      >h</span
+                                    ></span
+                                  ></span
+                                ></span
+                              ></span
+                            ><span class="vlist-s">​</span></span
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.4451em"
+                              ><span></span></span></span></span></span
+                      ><span class="mclose nulldelimiter"></span></span
+                    ><span class="mspace" style="margin-right: 0.2222em"></span
+                    ><span class="mbin">×</span
+                    ><span
+                      class="mspace"
+                      style="margin-right: 0.2222em"
+                    ></span></span
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1.1405em; vertical-align: -0.4451em"
+                    ></span
+                    ><span class="mord"
+                      ><span class="mopen nulldelimiter"></span
+                      ><span class="mfrac"
+                        ><span class="vlist-t vlist-t2"
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.6954em"
+                              ><span style="top: -2.655em"
+                                ><span class="pstrut" style="height: 3em"></span
+                                ><span class="sizing reset-size6 size3 mtight"
+                                  ><span class="mord mtight"
+                                    ><span class="mord mtight"
+                                      ><span
+                                        class="mord mathnormal mtight"
+                                        style="margin-right: 0.02691em"
+                                        >w</span
+                                      ><span class="msupsub"
+                                        ><span class="vlist-t vlist-t2"
+                                          ><span class="vlist-r"
+                                            ><span
+                                              class="vlist"
+                                              style="height: 0.3173em"
+                                              ><span
+                                                style="
+                                                  top: -2.357em;
+                                                  margin-left: -0.0269em;
+                                                  margin-right: 0.0714em;
+                                                "
+                                                ><span
+                                                  class="pstrut"
+                                                  style="height: 2.5em"
+                                                ></span
+                                                ><span
+                                                  class="sizing reset-size3 size1 mtight"
+                                                  ><span class="mord mtight"
+                                                    >2</span
+                                                  ></span
+                                                ></span
+                                              ></span
+                                            ><span class="vlist-s"
+                                              >​</span
+                                            ></span
+                                          ><span class="vlist-r"
+                                            ><span
+                                              class="vlist"
+                                              style="height: 0.143em"
+                                              ><span></span></span></span></span></span></span></span></span></span
+                              ><span style="top: -3.23em"
+                                ><span class="pstrut" style="height: 3em"></span
+                                ><span
+                                  class="frac-line"
+                                  style="border-bottom-width: 0.04em"
+                                ></span></span
+                              ><span style="top: -3.394em"
+                                ><span class="pstrut" style="height: 3em"></span
+                                ><span class="sizing reset-size6 size3 mtight"
+                                  ><span class="mord mtight"
+                                    ><span
+                                      class="mord mathnormal mtight"
+                                      style="margin-right: 0.02691em"
+                                      >w</span
+                                    ></span
+                                  ></span
+                                ></span
+                              ></span
+                            ><span class="vlist-s">​</span></span
+                          ><span class="vlist-r"
+                            ><span class="vlist" style="height: 0.4451em"
+                              ><span></span></span></span></span></span
+                      ><span
+                        class="mclose nulldelimiter"
+                      ></span></span></span></span></span
+              >（优先向上取整）。
+            </p>
+          </blockquote>
+        </li>
+        <li>
+          <p>
+            <strong>Faster R-CNN</strong><br />
+            Fast R-CNN 有一个劣势在于需要生成大量的 region proposal
+            减慢了效率。对比起 Fast R-CNN，Faster R-CNN
+            的唯一不同是把选择性搜索替换为区域提议网络（<strong>RPN</strong>），减少
+            region proposal 的生成数量。<br />
+            <img
+              src="https://d2l.ai/_images/faster-rcnn.svg"
+              alt="Faster R-CNN"
+            />
+          </p>
+          <blockquote>
+            <p>
+              RPN：用 3*3 卷积层(<em>padding=1</em>)处理 CNN
+              的输出，输出的通道数记为 c，这样特征图中每个单元均得到一个长度为 c
+              的新特征。以特征图的每个像素为中心，自动生成并标注多个锚框。然后按照之前介绍的步骤进入类别预测和位置偏移预测（使用非极大值抑制移除相似的）
+            </p>
+          </blockquote>
+        </li>
+        <li>
+          <p>
+            <strong>Mask R-CNN</strong><br />
+            训练集如果标注了每个目标在图像上的像素级位置（像 PS
+            抠图抠出一整块像素然后知道这一片都是狗的那种）就可以利用这些信息提升目标检测精度。在
+            Faster R-CNN 的基础上，Mask R-CNN 把 ROI Pooling 改为 ROI
+            align，利用双线性插值（bilinear
+            interpolation）保留空间特征信息，更适合像素级预测。另外引入了全卷积层（FC）达成像素级的目标预测，后续会详细介绍
+            FC。网络设计如下：<br />
+            <img src="https://d2l.ai/_images/mask-rcnn.svg" alt="Mask R-CNN" />
+          </p>
+          <blockquote>
+            <p>
+              双线性插值：通过周围四个已知点，在水平和垂直方向上分别进行线性插值，估算某一点。对比起
+              ROI Pooling，它不进行向上取整，更能精确到像素。
+            </p>
+          </blockquote>
+        </li>
+      </ul>
+      <h4 id="转置卷积transposed-convolution">
+        转置卷积（Transposed Convolution）
+      </h4>
+      <p>
+        前面的这些 CNN 相关的 layer
+        全部都是把数据降维或者不变的。但是语义分割任务需要将每个像素分配到一个类别，保持输出和输出的空间维度一致会更方便，因此引入一个可以升维的层——转置卷积（Transposed
+        Convolution）层。<br />
+        ConvTranspose 层类似于可以放大细节的放大镜。细节如下：
+      </p>
+      <ul>
+        <li>
+          输入通过 kernel 的时候，每一个元素广播后和 kernel
+          相乘，形成一个小矩阵，每一个小矩阵通过下面的 padding 和 stride
+          的控制相加形成结果的大矩阵
+        </li>
+        <li>参数有 padding 和 stride，都用于输出（常规的是用于输入的）</li>
+        <li>
+          padding 指裁剪掉输出周围的多少层，stride 指在卷积过程中，输入和 kernel
+          相乘之后得到的小矩阵的滑动步幅。步幅作用如图：<br />
+          <img
+            src="https://d2l.ai/_images/trans_conv_stride2.svg"
+            alt="stride"
+          />
+        </li>
+        <li>
+          “转置”名称的由来，是因为普通卷积可以看待为矩阵乘法<span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi mathvariant="bold">y</mi><mo>=</mo
+                    ><mi mathvariant="bold">W</mi
+                    ><mi mathvariant="bold">x</mi></mrow
+                  ><annotation encoding="application/x-tex"
+                    >\mathbf{y}=\mathbf{W}\mathbf{x}</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 0.6389em; vertical-align: -0.1944em"
+                ></span
+                ><span class="mord mathbf" style="margin-right: 0.01597em"
+                  >y</span
+                ><span class="mspace" style="margin-right: 0.2778em"></span
+                ><span class="mrel">=</span
+                ><span
+                  class="mspace"
+                  style="margin-right: 0.2778em"
+                ></span></span
+              ><span class="base"
+                ><span class="strut" style="height: 0.6861em"></span
+                ><span class="mord mathbf">Wx</span></span
+              ></span
+            ></span
+          >，反向传播函数<span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><msub
+                      ><mi mathvariant="normal">∇</mi
+                      ><mi mathvariant="bold">x</mi></msub
+                    ><mi mathvariant="bold">y</mi><mo>=</mo
+                    ><msup
+                      ><mi mathvariant="bold">W</mi
+                      ><mi mathvariant="normal">⊤</mi></msup
+                    ></mrow
+                  ><annotation encoding="application/x-tex"
+                    >\nabla_{\mathbf{x}}\mathbf{y}=\mathbf{W}^\top</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 0.8778em; vertical-align: -0.1944em"
+                ></span
+                ><span class="mord"
+                  ><span class="mord">∇</span
+                  ><span class="msupsub"
+                    ><span class="vlist-t vlist-t2"
+                      ><span class="vlist-r"
+                        ><span class="vlist" style="height: 0.1611em"
+                          ><span
+                            style="
+                              top: -2.55em;
+                              margin-left: 0em;
+                              margin-right: 0.05em;
+                            "
+                            ><span class="pstrut" style="height: 2.7em"></span
+                            ><span class="sizing reset-size6 size3 mtight"
+                              ><span class="mord mtight"
+                                ><span class="mord mathbf mtight">x</span></span
+                              ></span
+                            ></span
+                          ></span
+                        ><span class="vlist-s">​</span></span
+                      ><span class="vlist-r"
+                        ><span class="vlist" style="height: 0.15em"
+                          ><span></span></span></span></span></span></span
+                ><span class="mord mathbf" style="margin-right: 0.01597em"
+                  >y</span
+                ><span class="mspace" style="margin-right: 0.2778em"></span
+                ><span class="mrel">=</span
+                ><span
+                  class="mspace"
+                  style="margin-right: 0.2778em"
+                ></span></span
+              ><span class="base"
+                ><span class="strut" style="height: 0.8491em"></span
+                ><span class="mord"
+                  ><span class="mord mathbf" style="margin-right: 0.01597em"
+                    >W</span
+                  ><span class="msupsub"
+                    ><span class="vlist-t"
+                      ><span class="vlist-r"
+                        ><span class="vlist" style="height: 0.8491em"
+                          ><span style="top: -3.063em; margin-right: 0.05em"
+                            ><span class="pstrut" style="height: 2.7em"></span
+                            ><span class="sizing reset-size6 size3 mtight"
+                              ><span class="mord mtight">⊤</span></span
+                            ></span
+                          ></span
+                        ></span
+                      ></span
+                    ></span
+                  ></span
+                ></span
+              ></span
+            ></span
+          >；而转置卷积层的作用类似于把上述操作调转，正向传播与<span
+            class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><msup
+                      ><mi mathvariant="bold">W</mi
+                      ><mi mathvariant="normal">⊤</mi></msup
+                    ></mrow
+                  ><annotation encoding="application/x-tex"
+                    >\mathbf{W}^\top</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span class="strut" style="height: 0.8491em"></span
+                ><span class="mord"
+                  ><span class="mord mathbf" style="margin-right: 0.01597em"
+                    >W</span
+                  ><span class="msupsub"
+                    ><span class="vlist-t"
+                      ><span class="vlist-r"
+                        ><span class="vlist" style="height: 0.8491em"
+                          ><span style="top: -3.063em; margin-right: 0.05em"
+                            ><span class="pstrut" style="height: 2.7em"></span
+                            ><span class="sizing reset-size6 size3 mtight"
+                              ><span class="mord mtight">⊤</span></span
+                            ></span
+                          ></span
+                        ></span
+                      ></span
+                    ></span
+                  ></span
+                ></span
+              ></span
+            ></span
+          >相乘，因此得名。
+        </li>
+      </ul>
+      <h4 id="全卷积网络fcn">全卷积网络（FCN）</h4>
+      <p>
+        因为 FCN
+        的输出结果是对每一个像素的预测，所以需要将中间层特征图的高和宽变成输入图像的尺寸，由上述的
+        ConvTranspose 实现。<br />
+        首先用常规的卷积神经网络提取图像特征（不要池化层、输出层），然后用 1*1
+        的卷积层转换通道数（为分类数）。最后需要通过转置卷积层把特征图放大。<br />
+        训练前用提取到的特征初始化 ConvTranspose
+        层（<em>假如随机初始化会浪费大量训练资源</em>），需要把下采样得到的特征图放大，即
+        upsampling，可以使用上面提到过的双线性插值。
+      </p>
+      <h4 id="风格迁移">风格迁移</h4>
+      <p>略</p>
+    </div>
+  </body>
+</html>
