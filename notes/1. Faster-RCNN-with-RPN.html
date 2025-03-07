@@ -59,8 +59,41 @@
     
       <div class="crossnote markdown-preview  ">
       
-<link rel="stylesheet" type="text/css" href="../custom-style.css">
-<h1 id="论文faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks">论文：《Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks》 </h1>
+<h1 id="faster-r-cnn-towards-real-time-object-detection-with-region-proposal-networks阅读笔记">《Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks》阅读笔记 </h1>
+<h2 id="简介">简介 </h2>
+<p>Fast R-CNN 等模型优化了监测网络，但在 Selective Search 选定 regional proposal 的时候效率太低，于是 Faster R-CNN 提出 RPN 直接卷积特征图预设锚框，把预设部分合并原来的 Fast R-CNN 的检测部分放在一起训练，极大提升了效率与精度。</p>
+<blockquote>
+<p>端到端训练：整个系统从输入到输出所有步骤都是可训练且联合优化的。</p>
+</blockquote>
+<h2 id="背景">背景 </h2>
+<p>目前获取 regional proposal 的最流行的方法是 selective search，它的核心是贪心算法。</p>
+<blockquote>
+<p>先用图像分割算法把图片分割为一些小超像素（即一些颜色和纹理等底层特征相似的部分）。对于所有相邻的超像素对，找出相似度最高的两个区域（<em>贪心</em>）合并为新区域，移除这两个区域的所有相关项，把新区域和相邻区域纳入运算，一直循环。</p>
+</blockquote>
+<p>这种运算明显是在 CPU 上跑的，算法本身和不能多线程运算都决定了它慢（CPU 上 2s/图），拖累了整个模型的速度；而且贪心容易陷入局部最优，也处理不了复杂的图像。<br>
+新方法 edgeboxes 稍微好一点，但是因为在 CPU 上跑，并且不能结合语义，所以精度效率都不好。<br>
+如果实现为在 GPU 上面跑呢？但是不把它和后面的 detection network 架设到一起共享权重，好像浪费了；并且发现 CNN 提取的特征还可以帮助生成 regional proposal ，所以 RPN 就这样干了。</p>
+<p>目标检测时多尺度处理是一个重要的部分。常见的三种处理关系：</p>
+<ol>
+<li>图像金字塔和特征金字塔<br>
+缩放出来多个尺度的图像，分别提取特征，单独检测（非常慢）</li>
+<li>滤波器金字塔<br>
+使用多个不同尺寸或者比例的 filter 来检测不同尺度物体（因为需要事先设定多个滤波器，参数冗余，灵活性差）</li>
+<li><span style="color:#ff0000;">参考框（锚框）金字塔</span><br>
+事先对单尺度图上提取到的特征设定多个 archor（archor 的超参数需要事先定义），对每个 archor 预测分类得分和回归偏移量。灵活且高效率。</li>
+</ol>
+<p>Faster R-CNN 采用第三种。</p>
+<h2 id="实现">实现 </h2>
+<p>Faster R-CNN 由两个部分组成。一个是 Fast R-CNN 的预测模块，一个是 RPN。RPN 就好像“注意力机制”一样提醒预测模块要注意什么，预测出来的结果反向传播时又能够同时训练预测模块和 RPN 的性能。</p>
+<h3 id="rpn">RPN </h3>
+<p>用于特征提取的卷积层是被共享的，然后再分支。<br>
+生成候选区域时，用一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">n \times n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>（通常取<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">n=3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>）卷积层去对特征图卷积，然后再用两个<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">1 \times 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 卷积层分离特征，流入回归分支和分类分支。</p>
+<p><img src="../images/faster_rcnn.png" alt="Fast R-CNN"></p>
+<h4 id="锚框">锚框 </h4>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>×</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">3 \times 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span> 层滑动的时候，会以滑动窗口为中心，生成若干个锚框（这些锚框可以被映射回原图，它们大致捕获了图像的特征）。锚框的个数如下：<br>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>单点锚框个数</mtext><mo>=</mo><mtext>尺度个数</mtext><mo>×</mo><mtext>缩放比个数</mtext></mrow><annotation encoding="application/x-tex">\text{单点锚框个数} = \text{尺度个数} \times \text{缩放比个数}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">单点锚框个数</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord cjk_fallback">尺度个数</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">缩放比个数</span></span></span></span></span></span><br>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>总锚框个数</mtext><mo>=</mo><mtext>单点锚框个数</mtext><mo>×</mo><mtext>特征图大小</mtext></mrow><annotation encoding="application/x-tex">\text{总锚框个数} = \text{单点锚框个数} \times \text{特征图大小}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">总锚框个数</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord cjk_fallback">单点锚框个数</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">特征图大小</span></span></span></span></span></span><br>
+在预测前，</p>
 
       </div>
       
