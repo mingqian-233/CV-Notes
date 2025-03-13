@@ -876,15 +876,87 @@
       }
     </style>
     <!-- The content below will be included at the end of the <head> element. -->
+
     <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", function () {
-        // your code here
+        document
+          .getElementById("searchInput")
+          .addEventListener("keypress", (e) => {
+            if (e.key === "Enter") searchNotes();
+          });
       });
+
+      async function searchNotes() {
+        const query = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+
+        const notes = [
+          { title: "D2L", url: "notes/0.%20D2L-CV.html" },
+          { title: "Faster R-CNN", url: "notes/1.%20Faster_R-CNN.html" },
+          { title: "FPN", url: "notes/2.%20FPN.html" },
+          {
+            title: "Mask R-CNN",
+            url: "https://mingqian-233.github.io/CV-Notes/notes/3.%20Mask_R-CNN.html",
+          },
+        ];
+
+        const resultsContainer = document.getElementById("searchResults");
+
+        resultsContainer.innerHTML = "搜索中..."; // 提示正在搜索
+
+        const results = [];
+
+        for (const note of notes) {
+          try {
+            const response = await fetch(note.url);
+
+            if (!response.ok)
+              throw new Error(`HTTP error! status: ${response.status}`);
+
+            const data = await response.text();
+
+            const parser = new DOMParser();
+
+            const doc = parser.parseFromString(data, "text/html");
+
+            const bodyText = doc.body.innerText.toLowerCase();
+
+            if (bodyText.includes(query)) {
+              results.push(note);
+            }
+          } catch (error) {
+            console.error(`无法加载 ${note.url}:`, error);
+          }
+        }
+
+        resultsContainer.innerHTML = ""; // 清空之前的提示
+
+        if (results.length === 0) {
+          resultsContainer.innerHTML = "未找到结果";
+        } else {
+          results.forEach((note) => {
+            const link = document.createElement("a");
+
+            link.href = note.url;
+
+            link.textContent = note.title;
+
+            resultsContainer.appendChild(link);
+
+            resultsContainer.appendChild(document.createElement("br"));
+          });
+        }
+      }
     </script>
   </head>
   <body for="html-export">
     <div class="crossnote markdown-preview">
       <h1 id="学习-cv-过程中的笔记储存库">学习 CV 过程中的笔记储存库</h1>
+      <input type="text" id="searchInput" placeholder="搜索笔记..." />
+      <button onclick="searchNotes()">搜索</button>
+
+      <div id="searchResults"></div>
       <h2 id="0-d2lhttpsmingqian-233githubiocv-notesnotes020d2l-cvhtml">
         0.
         <a href="https://mingqian-233.github.io/CV-Notes/notes/0.%20D2L-CV.html"
@@ -904,6 +976,15 @@
         2.
         <a href="https://mingqian-233.github.io/CV-Notes/notes/2.%20FPN.html"
           >FPN</a
+        >
+      </h2>
+      <h2
+        id="3-mask_r-cnnhttpsmingqian-233githubiocv-notesnotes320mask_r-cnnhtml"
+      >
+        3.
+        <a
+          href="https://mingqian-233.github.io/CV-Notes/notes/3.%20Mask_R-CNN.html"
+          >Mask R-CNN</a
         >
       </h2>
     </div>
