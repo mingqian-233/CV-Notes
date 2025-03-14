@@ -15,7 +15,7 @@ with open(html_file_path, 'r', encoding='utf-8') as html_file:
     html_content = html_file.read()
 
 # 在css文件中，把${图片名}$.jpeg替换成图片名称
-css_content = css_content.replace('${图片名}.jpeg$', pic_name)
+css_content = css_content.replace('${图片名}$.jpeg$', pic_name)
 # 找到 <style> 标签的位置
 style_tag_start = html_content.find('<style>')
 style_tag_end = html_content.find('</style>')

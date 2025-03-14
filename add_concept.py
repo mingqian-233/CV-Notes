@@ -3,8 +3,8 @@ import os
 # 文件路径
 file_path = r'index.html'
 
-name = 'Mask_R-CNN'
-show_name = 'Mask R-CNN'
+name = 'RetinaNet'
+show_name = 'RetinaNet'
 id = 3
 url = f'https://mingqian-233.github.io/CV-Notes/notes/{id}.%20{name}.html'
 
