@@ -875,7 +875,41 @@
         background-color: rgba(255, 255, 255, 0.6); /* 白色蒙版 */
         z-index: -1;
       }
-    </style>
+    
+html body {
+  background-image: url("https://github.com/mingqian-233/CV-Notes/blob/master/images/${图片名}$.jpeg?raw=true");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  position: relative;
+}
+html body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: inherit;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  filter: blur(1px); /* 设置模糊效果 */
+  z-index: -2;
+}
+html body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.6); /* 白色蒙版 */
+  z-index: -1;
+}
+</style>
     <!-- The content below will be included at the end of the <head> element. -->
     <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", function () {

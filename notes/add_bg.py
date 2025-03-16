@@ -1,8 +1,12 @@
 import os
 
 # 定义文件路径
-file_name='4. RetinaNet.html'
-pic_name='bg_4.jpeg'
+file_name='5. FCOS.html'
+pic_name='bg_5.jpeg'
+
+
+
+
 html_file_path =file_name
 css_file_path = '../background-code.css'
 
