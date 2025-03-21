@@ -1,20 +1,812 @@
-<!DOCTYPE html><html><head>
-      <title>6. DETR</title>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
-      
-      
-      
-      
-      
-      <style>
-      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>6. DETR</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css"
+    />
+
+    <style>
+      code[class*="language-"],
+      pre[class*="language-"] {
+        color: #333;
+        background: 0 0;
+        font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        text-align: left;
+        white-space: pre;
+        word-spacing: normal;
+        word-break: normal;
+        word-wrap: normal;
+        line-height: 1.4;
+        -moz-tab-size: 8;
+        -o-tab-size: 8;
+        tab-size: 8;
+        -webkit-hyphens: none;
+        -moz-hyphens: none;
+        -ms-hyphens: none;
+        hyphens: none;
+      }
+      pre[class*="language-"] {
+        padding: 0.8em;
+        overflow: auto;
+        border-radius: 3px;
+        background: #f5f5f5;
+      }
+      :not(pre) > code[class*="language-"] {
+        padding: 0.1em;
+        border-radius: 0.3em;
+        white-space: normal;
+        background: #f5f5f5;
+      }
+      .token.blockquote,
+      .token.comment {
+        color: #969896;
+      }
+      .token.cdata {
+        color: #183691;
+      }
+      .token.doctype,
+      .token.macro.property,
+      .token.punctuation,
+      .token.variable {
+        color: #333;
+      }
+      .token.builtin,
+      .token.important,
+      .token.keyword,
+      .token.operator,
+      .token.rule {
+        color: #a71d5d;
+      }
+      .token.attr-value,
+      .token.regex,
+      .token.string,
+      .token.url {
+        color: #183691;
+      }
+      .token.atrule,
+      .token.boolean,
+      .token.code,
+      .token.command,
+      .token.constant,
+      .token.entity,
+      .token.number,
+      .token.property,
+      .token.symbol {
+        color: #0086b3;
+      }
+      .token.prolog,
+      .token.selector,
+      .token.tag {
+        color: #63a35c;
+      }
+      .token.attr-name,
+      .token.class,
+      .token.class-name,
+      .token.function,
+      .token.id,
+      .token.namespace,
+      .token.pseudo-class,
+      .token.pseudo-element,
+      .token.url-reference .token.variable {
+        color: #795da3;
+      }
+      .token.entity {
+        cursor: help;
+      }
+      .token.title,
+      .token.title .token.punctuation {
+        font-weight: 700;
+        color: #1d3e81;
+      }
+      .token.list {
+        color: #ed6a43;
+      }
+      .token.inserted {
+        background-color: #eaffea;
+        color: #55a532;
+      }
+      .token.deleted {
+        background-color: #ffecec;
+        color: #bd2c00;
+      }
+      .token.bold {
+        font-weight: 700;
+      }
+      .token.italic {
+        font-style: italic;
+      }
+      .language-json .token.property {
+        color: #183691;
+      }
+      .language-markup .token.tag .token.punctuation {
+        color: #333;
+      }
+      .language-css .token.function,
+      code.language-css {
+        color: #0086b3;
+      }
+      .language-yaml .token.atrule {
+        color: #63a35c;
+      }
+      code.language-yaml {
+        color: #183691;
+      }
+      .language-ruby .token.function {
+        color: #333;
+      }
+      .language-markdown .token.url {
+        color: #795da3;
+      }
+      .language-makefile .token.symbol {
+        color: #795da3;
+      }
+      .language-makefile .token.variable {
+        color: #183691;
+      }
+      .language-makefile .token.builtin {
+        color: #0086b3;
+      }
+      .language-bash .token.keyword {
+        color: #0086b3;
+      }
+      pre[data-line] {
+        position: relative;
+        padding: 1em 0 1em 3em;
+      }
+      pre[data-line] .line-highlight-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: transparent;
+        display: block;
+        width: 100%;
+      }
+      pre[data-line] .line-highlight {
+        position: absolute;
+        left: 0;
+        right: 0;
+        padding: inherit 0;
+        margin-top: 1em;
+        background: hsla(24, 20%, 50%, 0.08);
+        background: linear-gradient(
+          to right,
+          hsla(24, 20%, 50%, 0.1) 70%,
+          hsla(24, 20%, 50%, 0)
+        );
+        pointer-events: none;
+        line-height: inherit;
+        white-space: pre;
+      }
+      pre[data-line] .line-highlight:before,
+      pre[data-line] .line-highlight[data-end]:after {
+        content: attr(data-start);
+        position: absolute;
+        top: 0.4em;
+        left: 0.6em;
+        min-width: 1em;
+        padding: 0 0.5em;
+        background-color: hsla(24, 20%, 50%, 0.4);
+        color: #f4f1ef;
+        font: bold 65%/1.5 sans-serif;
+        text-align: center;
+        vertical-align: 0.3em;
+        border-radius: 999px;
+        text-shadow: none;
+        box-shadow: 0 1px #fff;
+      }
+      pre[data-line] .line-highlight[data-end]:after {
+        content: attr(data-end);
+        top: auto;
+        bottom: 0.4em;
+      }
+      html body {
+        font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans,
+          sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333;
+        background-color: #fff;
+        overflow: initial;
+        box-sizing: border-box;
+        word-wrap: break-word;
+      }
+      html body > :first-child {
+        margin-top: 0;
+      }
+      html body h1,
+      html body h2,
+      html body h3,
+      html body h4,
+      html body h5,
+      html body h6 {
+        line-height: 1.2;
+        margin-top: 1em;
+        margin-bottom: 16px;
+        color: #000;
+      }
+      html body h1 {
+        font-size: 2.25em;
+        font-weight: 300;
+        padding-bottom: 0.3em;
+      }
+      html body h2 {
+        font-size: 1.75em;
+        font-weight: 400;
+        padding-bottom: 0.3em;
+      }
+      html body h3 {
+        font-size: 1.5em;
+        font-weight: 500;
+      }
+      html body h4 {
+        font-size: 1.25em;
+        font-weight: 600;
+      }
+      html body h5 {
+        font-size: 1.1em;
+        font-weight: 600;
+      }
+      html body h6 {
+        font-size: 1em;
+        font-weight: 600;
+      }
+      html body h1,
+      html body h2,
+      html body h3,
+      html body h4,
+      html body h5 {
+        font-weight: 600;
+      }
+      html body h5 {
+        font-size: 1em;
+      }
+      html body h6 {
+        color: #5c5c5c;
+      }
+      html body strong {
+        color: #000;
+      }
+      html body del {
+        color: #5c5c5c;
+      }
+      html body a:not([href]) {
+        color: inherit;
+        text-decoration: none;
+      }
+      html body a {
+        color: #08c;
+        text-decoration: none;
+      }
+      html body a:hover {
+        color: #00a3f5;
+        text-decoration: none;
+      }
+      html body img {
+        max-width: 100%;
+      }
+      html body > p {
+        margin-top: 0;
+        margin-bottom: 16px;
+        word-wrap: break-word;
+      }
+      html body > ol,
+      html body > ul {
+        margin-bottom: 16px;
+      }
+      html body ol,
+      html body ul {
+        padding-left: 2em;
+      }
+      html body ol.no-list,
+      html body ul.no-list {
+        padding: 0;
+        list-style-type: none;
+      }
+      html body ol ol,
+      html body ol ul,
+      html body ul ol,
+      html body ul ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      html body li {
+        margin-bottom: 0;
+      }
+      html body li.task-list-item {
+        list-style: none;
+      }
+      html body li > p {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      html body .task-list-item-checkbox {
+        margin: 0 0.2em 0.25em -1.8em;
+        vertical-align: middle;
+      }
+      html body .task-list-item-checkbox:hover {
+        cursor: pointer;
+      }
+      html body blockquote {
+        margin: 16px 0;
+        font-size: inherit;
+        padding: 0 15px;
+        color: #5c5c5c;
+        background-color: #f0f0f0;
+        border-left: 4px solid #d6d6d6;
+      }
+      html body blockquote > :first-child {
+        margin-top: 0;
+      }
+      html body blockquote > :last-child {
+        margin-bottom: 0;
+      }
+      html body hr {
+        height: 4px;
+        margin: 32px 0;
+        background-color: #d6d6d6;
+        border: 0 none;
+      }
+      html body table {
+        margin: 10px 0 15px 0;
+        border-collapse: collapse;
+        border-spacing: 0;
+        display: block;
+        width: 100%;
+        overflow: auto;
+        word-break: normal;
+        word-break: keep-all;
+      }
+      html body table th {
+        font-weight: 700;
+        color: #000;
+      }
+      html body table td,
+      html body table th {
+        border: 1px solid #d6d6d6;
+        padding: 6px 13px;
+      }
+      html body dl {
+        padding: 0;
+      }
+      html body dl dt {
+        padding: 0;
+        margin-top: 16px;
+        font-size: 1em;
+        font-style: italic;
+        font-weight: 700;
+      }
+      html body dl dd {
+        padding: 0 16px;
+        margin-bottom: 16px;
+      }
+      html body code {
+        font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+        font-size: 0.85em;
+        color: #000;
+        background-color: #f0f0f0;
+        border-radius: 3px;
+        padding: 0.2em 0;
+      }
+      html body code::after,
+      html body code::before {
+        letter-spacing: -0.2em;
+        content: "\00a0";
+      }
+      html body pre > code {
+        padding: 0;
+        margin: 0;
+        word-break: normal;
+        white-space: pre;
+        background: 0 0;
+        border: 0;
+      }
+      html body .highlight {
+        margin-bottom: 16px;
+      }
+      html body .highlight pre,
+      html body pre {
+        padding: 1em;
+        overflow: auto;
+        line-height: 1.45;
+        border: #d6d6d6;
+        border-radius: 3px;
+      }
+      html body .highlight pre {
+        margin-bottom: 0;
+        word-break: normal;
+      }
+      html body pre code,
+      html body pre tt {
+        display: inline;
+        max-width: initial;
+        padding: 0;
+        margin: 0;
+        overflow: initial;
+        line-height: inherit;
+        word-wrap: normal;
+        background-color: transparent;
+        border: 0;
+      }
+      html body pre code:after,
+      html body pre code:before,
+      html body pre tt:after,
+      html body pre tt:before {
+        content: normal;
+      }
+      html body blockquote,
+      html body dl,
+      html body ol,
+      html body p,
+      html body pre,
+      html body ul {
+        margin-top: 0;
+        margin-bottom: 16px;
+      }
+      html body kbd {
+        color: #000;
+        border: 1px solid #d6d6d6;
+        border-bottom: 2px solid #c7c7c7;
+        padding: 2px 4px;
+        background-color: #f0f0f0;
+        border-radius: 3px;
+      }
+      @media print {
+        html body {
+          background-color: #fff;
+        }
+        html body h1,
+        html body h2,
+        html body h3,
+        html body h4,
+        html body h5,
+        html body h6 {
+          color: #000;
+          page-break-after: avoid;
+        }
+        html body blockquote {
+          color: #5c5c5c;
+        }
+        html body pre {
+          page-break-inside: avoid;
+        }
+        html body table {
+          display: table;
+        }
+        html body img {
+          display: block;
+          max-width: 100%;
+          max-height: 100%;
+        }
+        html body code,
+        html body pre {
+          word-wrap: break-word;
+          white-space: pre;
+        }
+      }
+      .markdown-preview {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      .markdown-preview ul {
+        list-style: disc;
+      }
+      .markdown-preview ul ul {
+        list-style: circle;
+      }
+      .markdown-preview ul ul ul {
+        list-style: square;
+      }
+      .markdown-preview ol {
+        list-style: decimal;
+      }
+      .markdown-preview ol ol,
+      .markdown-preview ul ol {
+        list-style-type: lower-roman;
+      }
+      .markdown-preview ol ol ol,
+      .markdown-preview ol ul ol,
+      .markdown-preview ul ol ol,
+      .markdown-preview ul ul ol {
+        list-style-type: lower-alpha;
+      }
+      .markdown-preview .newpage,
+      .markdown-preview .pagebreak {
+        page-break-before: always;
+      }
+      .markdown-preview pre.line-numbers {
+        position: relative;
+        padding-left: 3.8em;
+        counter-reset: linenumber;
+      }
+      .markdown-preview pre.line-numbers > code {
+        position: relative;
+      }
+      .markdown-preview pre.line-numbers .line-numbers-rows {
+        position: absolute;
+        pointer-events: none;
+        top: 1em;
+        font-size: 100%;
+        left: 0;
+        width: 3em;
+        letter-spacing: -1px;
+        border-right: 1px solid #999;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      .markdown-preview pre.line-numbers .line-numbers-rows > span {
+        pointer-events: none;
+        display: block;
+        counter-increment: linenumber;
+      }
+      .markdown-preview pre.line-numbers .line-numbers-rows > span:before {
+        content: counter(linenumber);
+        color: #999;
+        display: block;
+        padding-right: 0.8em;
+        text-align: right;
+      }
+      .markdown-preview .mathjax-exps .MathJax_Display {
+        text-align: center !important;
+      }
+      .markdown-preview:not([data-for="preview"])
+        .code-chunk
+        .code-chunk-btn-group {
+        display: none;
+      }
+      .markdown-preview:not([data-for="preview"]) .code-chunk .status {
+        display: none;
+      }
+      .markdown-preview:not([data-for="preview"]) .code-chunk .output-div {
+        margin-bottom: 16px;
+      }
+      .markdown-preview .md-toc {
+        padding: 0;
+      }
+      .markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link {
+        display: inline;
+        padding: 0.25rem 0;
+      }
+      .markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,
+      .markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p {
+        display: inline;
+      }
+      .markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link {
+        font-weight: 800;
+      }
+      .scrollbar-style::-webkit-scrollbar {
+        width: 8px;
+      }
+      .scrollbar-style::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: transparent;
+      }
+      .scrollbar-style::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: rgba(150, 150, 150, 0.66);
+        border: 4px solid rgba(150, 150, 150, 0.66);
+        background-clip: content-box;
+      }
+      html body[for="html-export"]:not([data-presentation-mode]) {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+      }
+      html
+        body[for="html-export"]:not([data-presentation-mode])
+        .markdown-preview {
+        position: relative;
+        top: 0;
+        min-height: 100vh;
+      }
+      @media screen and (min-width: 914px) {
+        html
+          body[for="html-export"]:not([data-presentation-mode])
+          .markdown-preview {
+          padding: 2em calc(50% - 457px + 2em);
+        }
+      }
+      @media screen and (max-width: 914px) {
+        html
+          body[for="html-export"]:not([data-presentation-mode])
+          .markdown-preview {
+          padding: 2em;
+        }
+      }
+      @media screen and (max-width: 450px) {
+        html
+          body[for="html-export"]:not([data-presentation-mode])
+          .markdown-preview {
+          font-size: 14px !important;
+          padding: 1em;
+        }
+      }
+      @media print {
+        html
+          body[for="html-export"]:not([data-presentation-mode])
+          #sidebar-toc-btn {
+          display: none;
+        }
+      }
+      html
+        body[for="html-export"]:not([data-presentation-mode])
+        #sidebar-toc-btn {
+        position: fixed;
+        bottom: 8px;
+        left: 8px;
+        font-size: 28px;
+        cursor: pointer;
+        color: inherit;
+        z-index: 99;
+        width: 32px;
+        text-align: center;
+        opacity: 0.4;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        #sidebar-toc-btn {
+        opacity: 1;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 300px;
+        height: 100%;
+        padding: 32px 0 48px 0;
+        font-size: 14px;
+        box-shadow: 0 0 4px rgba(150, 150, 150, 0.33);
+        box-sizing: border-box;
+        overflow: auto;
+        background-color: inherit;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc::-webkit-scrollbar {
+        width: 8px;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: transparent;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: rgba(150, 150, 150, 0.66);
+        border: 4px solid rgba(150, 150, 150, 0.66);
+        background-clip: content-box;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        a {
+        text-decoration: none;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        .md-toc {
+        padding: 0 16px;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        .md-toc
+        .md-toc-link-wrapper
+        .md-toc-link {
+        display: inline;
+        padding: 0.25rem 0;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        .md-toc
+        .md-toc-link-wrapper
+        .md-toc-link
+        div,
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        .md-toc
+        .md-toc-link-wrapper
+        .md-toc-link
+        p {
+        display: inline;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .md-sidebar-toc
+        .md-toc
+        .md-toc-link-wrapper.highlighted
+        .md-toc-link {
+        font-weight: 800;
+      }
+      html
+        body[for="html-export"]:not(
+          [data-presentation-mode]
+        )[html-show-sidebar-toc]
+        .markdown-preview {
+        left: 300px;
+        width: calc(100% - 300px);
+        padding: 2em calc(50% - 457px - 300px / 2);
+        margin: 0;
+        box-sizing: border-box;
+      }
+      @media screen and (max-width: 1274px) {
+        html
+          body[for="html-export"]:not(
+            [data-presentation-mode]
+          )[html-show-sidebar-toc]
+          .markdown-preview {
+          padding: 2em;
+        }
+      }
+      @media screen and (max-width: 450px) {
+        html
+          body[for="html-export"]:not(
+            [data-presentation-mode]
+          )[html-show-sidebar-toc]
+          .markdown-preview {
+          width: 100%;
+        }
+      }
+      html
+        body[for="html-export"]:not([data-presentation-mode]):not(
+          [html-show-sidebar-toc]
+        )
+        .markdown-preview {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      html
+        body[for="html-export"]:not([data-presentation-mode]):not(
+          [html-show-sidebar-toc]
+        )
+        .md-sidebar-toc {
+        display: none;
+      }
+    
 html body {
-  background-image: url("https://github.com/mingqian-233/CV-Notes/blob/master/images/${图片名}$.jpeg?raw=true");
+  background-image: url("https://github.com/mingqian-233/CV-Notes/blob/master/images/bg_6.jpeg?raw=true");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -47,87 +839,790 @@ html body::after {
   z-index: -1;
 }
 </style>
-      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function () {
-    // your code here
-  });
-</script></head><body for="html-export">
-    
-    
-      <div class="crossnote markdown-preview  ">
-      
-<h1 id="end-to-end-object-detection-with-transformers阅读笔记">《End-to-End Object Detection with Transformers》阅读笔记 </h1>
-<h2 id="简介">简介 </h2>
-<p>DETR 是一种将 Transformer 的架构运用到目标检测领域的方法。它不依赖任何间接的手工设计组件（anchor, regional proposal, NMS 等），而是通过端到端的方案生成预测结果，即直接输出一组固定数量的带类别预测的预测框。<br>
-DETR 引入了一种叫 object quries 的工具。它可以自行学习空间位置分布规律替代锚框。模型强制固定它的数量 N（最大检测数），模型就输出 N 个预测，然后通过二分图匹配筛选有效目标。</p>
-<h2 id="背景">背景 </h2>
-<p>OD 的目标，归根到底就是预测一些边界框，并且标注它们的类别。DETR 指出目前 OD 的方法都是"indirect"的，因为它们的方法无一不能避免先生成 <strong>region proposals（Faster R-CNN）, anchors（RetinaNet）, windows centers（FCOS）</strong>，然后再通过上述这些东西进行回归和分类。其中会经过 NMS 等后处理（postprocessing）操作把预测工具和 GT 匹配，而这些操作需要许多手工调参，如锚框长宽比组数，而且这些都会显著影响性能。</p>
-<p>DETR 规避了这些需求，形成了一种“真正的端到端”的方法。通过 Transformer 的编码器-解码器结构直接输出预测框集合，利用自注意力机制建模全局关系，并用二分图匹配损失函数将预测与真实框唯一匹配。该方法简化了检测流程，无需后处理步骤。</p>
-<h2 id="相关工作">相关工作 </h2>
-<ol>
-<li>
-<p>集合预测<br>
-集合预测直接预测无序集合，缺乏传统深度学习方法；元素之间的结构关系（重合框等）无法处理。<br>
-对于重复预测，传统方法通过 NMS 解决，DETR 通过对整张图片的整体推理让元素交互，消除冗余。采用 Transformer 实现<strong>并行解码</strong>，避免序列生成的住步骤依赖。</p>
-</li>
-<li>
-<p>Transformer 与并行解码<br>
-Self-Attention 机制从全序列聚合信息，并行更新所有元素，对长序列任务效果好。</p>
-</li>
-</ol>
-<h2 id="实现">实现 </h2>
-<p>直接预测目标集合需要两个工具：一个能够匹配预测和 GT 的全新的 Loss；一种可以直接预测一组对象并且建模这些对象的关系的神经网络结构。</p>
-<h3 id="od-的损失函数">OD 的损失函数 </h3>
-<p>训练期间，对 decoder 单轮输出，DETR 预测了一个集合，里面有 N 个对象。其中 N 一定要远大于需要预测的对象。如何衡量这个集合的损失呢？</p>
-<p>DETR 的整体预测流程如下。N 个输出中，超出实际目标数的部分使用<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∅</mi></mrow><annotation encoding="application/x-tex">\empty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">∅</span></span></span></span>填充。预测和 GT 通过<strong>匈牙利算法</strong>匹配，然后计算匹配上的损失。</p>
-<blockquote>
-<p>匈牙利算法的复杂度为 O(N^3)，只能用在 DETR 这种输出很少的结构上面。倘若用在 Faster R-CNN 这种模型上，会变得很慢。</p>
-</blockquote>
-<p>真实框和预测框的匹配代价：先把真实框和预测框用匈牙利算法一一对应，然后分别计算所有非<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∅</mi></mrow><annotation encoding="application/x-tex">\empty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">∅</span></span></span></span>对象的类别代价（预测类别概率的负值）和边界框代价（位置差异），相加。<br>
-匈牙利损失（最终损失）： 3. 匈牙利损失（最终损失）<br>
-匹配完成后，对已匹配的预测计算最终损失：</p>
-<p>最终损失为匈牙利损失：</p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi mathvariant="script">L</mi><mtext>Hungarian</mtext></msub><mo stretchy="false">(</mo><mi>y</mi><mo separator="true">,</mo><mover accent="true"><mi>y</mi><mo>^</mo></mover><mo stretchy="false">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><mrow><mo fence="true">[</mo><mo>−</mo><mi>log</mi><mo>⁡</mo><msub><mover accent="true"><mi>p</mi><mo>^</mo></mover><mrow><mover accent="true"><mi>σ</mi><mo>^</mo></mover><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msub><mo stretchy="false">(</mo><msub><mi>c</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>+</mo><msub><mn mathvariant="double-struck">1</mn><mrow><mo stretchy="false">{</mo><msub><mi>c</mi><mi>i</mi></msub><mo mathvariant="normal">≠</mo><mi mathvariant="normal">∅</mi><mo stretchy="false">}</mo></mrow></msub><msub><mi mathvariant="script">L</mi><mtext>box</mtext></msub><mo stretchy="false">(</mo><msub><mi>b</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mover accent="true"><mi>b</mi><mo>^</mo></mover><mrow><mover accent="true"><mi>σ</mi><mo>^</mo></mover><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msub><mo stretchy="false">)</mo><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">\mathcal{L}_{\text{Hungarian}}(y, \hat{y}) = \sum_{i=1}^N \left[ -\log \hat{p}_{\hat{\sigma}(i)}(c_i) + \mathbb{1}_{\{c_i \neq \varnothing\}} \mathcal{L}_{\text{box}}(b_i, \hat{b}_{\hat{\sigma}(i)}) \right]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathcal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Hungarian</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.106em;vertical-align:-1.2777em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2777em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">[</span></span><span class="mord">−</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">p</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.5198em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord accent mtight"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span></span><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord mtight">^</span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">i</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3552em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord">1</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.5198em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">{</span><span class="mord mtight"><span class="mord mathnormal mtight">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3281em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mrel mtight"><span class="mrel mtight"><span class="mord vbox mtight"><span class="thinbox mtight"><span class="rlap mtight"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord mtight"><span class="mrel mtight"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel mtight">=</span></span><span class="mord amsrm mtight">∅</span><span class="mclose mtight">}</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3552em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathcal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">box</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9579em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">b</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.5198em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord accent mtight"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span></span><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord mtight">^</span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">i</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3552em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">]</span></span></span></span></span></span></span></p>
-<p>分类损失使用负对数似然（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mi>log</mi><mo>⁡</mo><mover accent="true"><mi>p</mi><mo>^</mo></mover></mrow><annotation encoding="application/x-tex">-\log \hat{p}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">p</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span>），增强错误分类的惩罚。<br>
-对 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub><mo>=</mo><mi mathvariant="normal">∅</mi></mrow><annotation encoding="application/x-tex">c_i = \varnothing</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6633em;vertical-align:-0.0817em;"></span><span class="mord amsrm">∅</span></span></span></span> 的损失项降权（因子 10），缓解类别不平衡。<br>
-对边界框损失，组合 L1 损失与 GIoU 损失，解决尺度敏感问题。</p>
-<h3 id="detr-的架构">DETR 的架构 </h3>
-<p><img src="../images/DETR.png" alt="DETR"><br>
-CNN 作为 backbone 提取特征图，和 positional encoding 一起输入 Transformer encoder，再流入 Transformer decoder。DETR 的 Transformer decoder 并不使用 Mask。</p>
-<p>Decoder 的输入是 N 个可学习的 object queries。有以下特征：</p>
-<ol>
-<li>无序（顺序不敏感，变化顺序不会改变语义）</li>
-<li>独特语义（单个 object query 的语义独特，不同的 object query 会关注不同的目标）<br>
-同时，Cross-Attention 也让不同的 queries 之间相互关注，让它们不会重复预测。<br>
-（它的地位类似于 RPN）</li>
-</ol>
-<p>后续，Decoder 得到的信息会通过以下的 FFN 被转化为携带类别信息的边界框预测。</p>
-<p><strong>FFN</strong>（Prediction Feed-Forward Networks）是输出检测结果的模块，将 Decoder 的输出转化为具体结果。<br>
-三层感知机输出归一化的边界框坐标，单独的线性层输出类别概率。</p>
-<p>这里很特别的是，传统检测头是预测偏移，而 FFN 直接得到绝对坐标。传统检测头通过 NMS 去冗余，而 FFN 直接用二分图匹配去冗余。</p>
-<h2 id="不足">不足 </h2>
-<p>DETR 的劣势很明显：</p>
-<ol>
-<li>对小目标不敏感（单尺度）<br>
-原因：encoder 输入的时候进行下采样，细节丢失严重；全局的注意力难以捕捉小目标。</li>
-<li>训练周期长，难以收敛<br>
-原因：transformer 就是这样的；匈牙利算法训练初期不稳定（因为 object queries 的随机性），收敛更慢。</li>
-<li>贵<br>
-原因：transformer 就是这样的。</li>
-<li>N 需要手动定义固定数量，而且需要远大于目标数，导致大量的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∅</mi></mrow><annotation encoding="application/x-tex">\empty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">∅</span></span></span></span>被浪费。</li>
-<li>位置编码和传统文本 Transformer 一样，可能对某些特殊目标不靠谱。</li>
-<li>损失函数仍然有分类和回归损失的超参数，调整敏感。</li>
-</ol>
-<p>DETR 的局限性很强。遥感等场景下，我们仍然广泛使用 R-CNN 这种传统架构。</p>
-
-      </div>
-      
-      
-    
-    
-    
-    
-    
-    
-  
-    </body></html>
+    <!-- The content below will be included at the end of the <head> element. -->
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function () {
+        // your code here
+      });
+    </script>
+  </head>
+  <body for="html-export">
+    <div class="crossnote markdown-preview">
+      <h1 id="end-to-end-object-detection-with-transformers阅读笔记">
+        《End-to-End Object Detection with Transformers》阅读笔记
+      </h1>
+      <h2 id="简介">简介</h2>
+      <p>
+        DETR 是一种将 Transformer
+        的架构运用到目标检测领域的方法。它不依赖任何间接的手工设计组件（anchor,
+        regional proposal, NMS
+        等），而是通过端到端的方案生成预测结果，即直接输出一组固定数量的带类别预测的预测框。<br />
+        DETR 引入了一种叫 object quries
+        的工具。它可以自行学习空间位置分布规律替代锚框。模型强制固定它的数量
+        N（最大检测数），模型就输出 N 个预测，然后通过二分图匹配筛选有效目标。
+      </p>
+      <h2 id="背景">背景</h2>
+      <p>
+        OD 的目标，归根到底就是预测一些边界框，并且标注它们的类别。DETR 指出目前
+        OD 的方法都是"indirect"的，因为它们的方法无一不能避免先生成
+        <strong
+          >region proposals（Faster R-CNN）, anchors（RetinaNet）, windows
+          centers（FCOS）</strong
+        >，然后再通过上述这些东西进行回归和分类。其中会经过 NMS
+        等后处理（postprocessing）操作把预测工具和 GT
+        匹配，而这些操作需要许多手工调参，如锚框长宽比组数，而且这些都会显著影响性能。
+      </p>
+      <p>
+        DETR 规避了这些需求，形成了一种“真正的端到端”的方法。通过 Transformer
+        的编码器-解码器结构直接输出预测框集合，利用自注意力机制建模全局关系，并用二分图匹配损失函数将预测与真实框唯一匹配。该方法简化了检测流程，无需后处理步骤。
+      </p>
+      <h2 id="相关工作">相关工作</h2>
+      <ol>
+        <li>
+          <p>
+            集合预测<br />
+            集合预测直接预测无序集合，缺乏传统深度学习方法；元素之间的结构关系（重合框等）无法处理。<br />
+            对于重复预测，传统方法通过 NMS 解决，DETR
+            通过对整张图片的整体推理让元素交互，消除冗余。采用 Transformer
+            实现<strong>并行解码</strong>，避免序列生成的住步骤依赖。
+          </p>
+        </li>
+        <li>
+          <p>
+            Transformer 与并行解码<br />
+            Self-Attention
+            机制从全序列聚合信息，并行更新所有元素，对长序列任务效果好。
+          </p>
+        </li>
+      </ol>
+      <h2 id="实现">实现</h2>
+      <p>
+        直接预测目标集合需要两个工具：一个能够匹配预测和 GT 的全新的
+        Loss；一种可以直接预测一组对象并且建模这些对象的关系的神经网络结构。
+      </p>
+      <h3 id="od-的损失函数">OD 的损失函数</h3>
+      <p>
+        训练期间，对 decoder 单轮输出，DETR 预测了一个集合，里面有 N
+        个对象。其中 N 一定要远大于需要预测的对象。如何衡量这个集合的损失呢？
+      </p>
+      <p>
+        DETR 的整体预测流程如下。N 个输出中，超出实际目标数的部分使用<span
+          class="katex"
+          ><span class="katex-mathml"
+            ><math xmlns="http://www.w3.org/1998/Math/MathML"
+              ><semantics
+                ><mrow><mi mathvariant="normal">∅</mi></mrow
+                ><annotation encoding="application/x-tex"
+                  >\empty</annotation
+                ></semantics
+              ></math
+            ></span
+          ><span class="katex-html" aria-hidden="true"
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 0.8056em; vertical-align: -0.0556em"
+              ></span
+              ><span class="mord">∅</span></span
+            ></span
+          ></span
+        >填充。预测和 GT
+        通过<strong>匈牙利算法</strong>匹配，然后计算匹配上的损失。
+      </p>
+      <blockquote>
+        <p>
+          匈牙利算法的复杂度为 O(N^3)，只能用在 DETR
+          这种输出很少的结构上面。倘若用在 Faster R-CNN 这种模型上，会变得很慢。
+        </p>
+      </blockquote>
+      <p>
+        真实框和预测框的匹配代价：先把真实框和预测框用匈牙利算法一一对应，然后分别计算所有非<span
+          class="katex"
+          ><span class="katex-mathml"
+            ><math xmlns="http://www.w3.org/1998/Math/MathML"
+              ><semantics
+                ><mrow><mi mathvariant="normal">∅</mi></mrow
+                ><annotation encoding="application/x-tex"
+                  >\empty</annotation
+                ></semantics
+              ></math
+            ></span
+          ><span class="katex-html" aria-hidden="true"
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 0.8056em; vertical-align: -0.0556em"
+              ></span
+              ><span class="mord">∅</span></span
+            ></span
+          ></span
+        >对象的类别代价（预测类别概率的负值）和边界框代价（位置差异），相加。<br />
+        匈牙利损失（最终损失）： 3. 匈牙利损失（最终损失）<br />
+        匹配完成后，对已匹配的预测计算最终损失：
+      </p>
+      <p>最终损失为匈牙利损失：</p>
+      <p>
+        <span class="katex-display"
+          ><span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"
+                ><semantics
+                  ><mrow
+                    ><msub
+                      ><mi mathvariant="script">L</mi
+                      ><mtext>Hungarian</mtext></msub
+                    ><mo stretchy="false">(</mo><mi>y</mi
+                    ><mo separator="true">,</mo
+                    ><mover accent="true"><mi>y</mi><mo>^</mo></mover
+                    ><mo stretchy="false">)</mo><mo>=</mo
+                    ><munderover
+                      ><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow
+                      ><mi>N</mi></munderover
+                    ><mrow
+                      ><mo fence="true">[</mo><mo>−</mo><mi>log</mi><mo>⁡</mo
+                      ><msub
+                        ><mover accent="true"><mi>p</mi><mo>^</mo></mover
+                        ><mrow
+                          ><mover accent="true"><mi>σ</mi><mo>^</mo></mover
+                          ><mo stretchy="false">(</mo><mi>i</mi
+                          ><mo stretchy="false">)</mo></mrow
+                        ></msub
+                      ><mo stretchy="false">(</mo
+                      ><msub><mi>c</mi><mi>i</mi></msub
+                      ><mo stretchy="false">)</mo><mo>+</mo
+                      ><msub
+                        ><mn mathvariant="double-struck">1</mn
+                        ><mrow
+                          ><mo stretchy="false">{</mo
+                          ><msub><mi>c</mi><mi>i</mi></msub
+                          ><mo mathvariant="normal">≠</mo
+                          ><mi mathvariant="normal">∅</mi
+                          ><mo stretchy="false">}</mo></mrow
+                        ></msub
+                      ><msub
+                        ><mi mathvariant="script">L</mi><mtext>box</mtext></msub
+                      ><mo stretchy="false">(</mo
+                      ><msub><mi>b</mi><mi>i</mi></msub
+                      ><mo separator="true">,</mo
+                      ><msub
+                        ><mover accent="true"><mi>b</mi><mo>^</mo></mover
+                        ><mrow
+                          ><mover accent="true"><mi>σ</mi><mo>^</mo></mover
+                          ><mo stretchy="false">(</mo><mi>i</mi
+                          ><mo stretchy="false">)</mo></mrow
+                        ></msub
+                      ><mo stretchy="false">)</mo><mo fence="true">]</mo></mrow
+                    ></mrow
+                  ><annotation encoding="application/x-tex"
+                    >\mathcal{L}_{\text{Hungarian}}(y, \hat{y}) = \sum_{i=1}^N
+                    \left[ -\log \hat{p}_{\hat{\sigma}(i)}(c_i) +
+                    \mathbb{1}_{\{c_i \neq \varnothing\}}
+                    \mathcal{L}_{\text{box}}(b_i, \hat{b}_{\hat{\sigma}(i)})
+                    \right]</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1.0361em; vertical-align: -0.2861em"
+                ></span
+                ><span class="mord"
+                  ><span class="mord mathcal">L</span
+                  ><span class="msupsub"
+                    ><span class="vlist-t vlist-t2"
+                      ><span class="vlist-r"
+                        ><span class="vlist" style="height: 0.3283em"
+                          ><span
+                            style="
+                              top: -2.55em;
+                              margin-left: 0em;
+                              margin-right: 0.05em;
+                            "
+                            ><span class="pstrut" style="height: 2.7em"></span
+                            ><span class="sizing reset-size6 size3 mtight"
+                              ><span class="mord mtight"
+                                ><span class="mord text mtight"
+                                  ><span class="mord mtight"
+                                    >Hungarian</span
+                                  ></span
+                                ></span
+                              ></span
+                            ></span
+                          ></span
+                        ><span class="vlist-s">​</span></span
+                      ><span class="vlist-r"
+                        ><span class="vlist" style="height: 0.2861em"
+                          ><span></span></span></span></span></span></span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal" style="margin-right: 0.03588em"
+                  >y</span
+                ><span class="mpunct">,</span
+                ><span class="mspace" style="margin-right: 0.1667em"></span
+                ><span class="mord accent"
+                  ><span class="vlist-t vlist-t2"
+                    ><span class="vlist-r"
+                      ><span class="vlist" style="height: 0.6944em"
+                        ><span style="top: -3em"
+                          ><span class="pstrut" style="height: 3em"></span
+                          ><span
+                            class="mord mathnormal"
+                            style="margin-right: 0.03588em"
+                            >y</span
+                          ></span
+                        ><span style="top: -3em"
+                          ><span class="pstrut" style="height: 3em"></span
+                          ><span class="accent-body" style="left: -0.1944em"
+                            ><span class="mord">^</span></span
+                          ></span
+                        ></span
+                      ><span class="vlist-s">​</span></span
+                    ><span class="vlist-r"
+                      ><span class="vlist" style="height: 0.1944em"
+                        ><span></span></span></span></span></span
+                ><span class="mclose">)</span
+                ><span class="mspace" style="margin-right: 0.2778em"></span
+                ><span class="mrel">=</span
+                ><span
+                  class="mspace"
+                  style="margin-right: 0.2778em"
+                ></span></span
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 3.106em; vertical-align: -1.2777em"
+                ></span
+                ><span class="mop op-limits"
+                  ><span class="vlist-t vlist-t2"
+                    ><span class="vlist-r"
+                      ><span class="vlist" style="height: 1.8283em"
+                        ><span style="top: -1.8723em; margin-left: 0em"
+                          ><span class="pstrut" style="height: 3.05em"></span
+                          ><span class="sizing reset-size6 size3 mtight"
+                            ><span class="mord mtight"
+                              ><span class="mord mathnormal mtight">i</span
+                              ><span class="mrel mtight">=</span
+                              ><span class="mord mtight">1</span></span
+                            ></span
+                          ></span
+                        ><span style="top: -3.05em"
+                          ><span class="pstrut" style="height: 3.05em"></span
+                          ><span
+                            ><span class="mop op-symbol large-op">∑</span></span
+                          ></span
+                        ><span style="top: -4.3em; margin-left: 0em"
+                          ><span class="pstrut" style="height: 3.05em"></span
+                          ><span class="sizing reset-size6 size3 mtight"
+                            ><span
+                              class="mord mathnormal mtight"
+                              style="margin-right: 0.10903em"
+                              >N</span
+                            ></span
+                          ></span
+                        ></span
+                      ><span class="vlist-s">​</span></span
+                    ><span class="vlist-r"
+                      ><span class="vlist" style="height: 1.2777em"
+                        ><span></span></span></span></span></span
+                ><span class="mspace" style="margin-right: 0.1667em"></span
+                ><span class="minner"
+                  ><span class="mopen delimcenter" style="top: 0em"
+                    ><span class="delimsizing size2">[</span></span
+                  ><span class="mord">−</span
+                  ><span class="mspace" style="margin-right: 0.1667em"></span
+                  ><span class="mop"
+                    >lo<span style="margin-right: 0.01389em">g</span></span
+                  ><span class="mspace" style="margin-right: 0.1667em"></span
+                  ><span class="mord"
+                    ><span class="mord accent"
+                      ><span class="vlist-t vlist-t2"
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.6944em"
+                            ><span style="top: -3em"
+                              ><span class="pstrut" style="height: 3em"></span
+                              ><span class="mord mathnormal">p</span></span
+                            ><span style="top: -3em"
+                              ><span class="pstrut" style="height: 3em"></span
+                              ><span class="accent-body" style="left: -0.1667em"
+                                ><span class="mord">^</span></span
+                              ></span
+                            ></span
+                          ><span class="vlist-s">​</span></span
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.1944em"
+                            ><span></span></span></span></span></span
+                    ><span class="msupsub"
+                      ><span class="vlist-t vlist-t2"
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.3448em"
+                            ><span
+                              style="
+                                top: -2.5198em;
+                                margin-left: 0em;
+                                margin-right: 0.05em;
+                              "
+                              ><span class="pstrut" style="height: 2.7em"></span
+                              ><span class="sizing reset-size6 size3 mtight"
+                                ><span class="mord mtight"
+                                  ><span class="mord accent mtight"
+                                    ><span class="vlist-t"
+                                      ><span class="vlist-r"
+                                        ><span
+                                          class="vlist"
+                                          style="height: 0.6944em"
+                                          ><span style="top: -2.7em"
+                                            ><span
+                                              class="pstrut"
+                                              style="height: 2.7em"
+                                            ></span
+                                            ><span
+                                              class="mord mathnormal mtight"
+                                              style="margin-right: 0.03588em"
+                                              >σ</span
+                                            ></span
+                                          ><span style="top: -2.7em"
+                                            ><span
+                                              class="pstrut"
+                                              style="height: 2.7em"
+                                            ></span
+                                            ><span
+                                              class="accent-body"
+                                              style="left: -0.25em"
+                                              ><span class="mord mtight"
+                                                >^</span
+                                              ></span
+                                            ></span
+                                          ></span
+                                        ></span
+                                      ></span
+                                    ></span
+                                  ><span class="mopen mtight">(</span
+                                  ><span class="mord mathnormal mtight">i</span
+                                  ><span class="mclose mtight">)</span></span
+                                ></span
+                              ></span
+                            ></span
+                          ><span class="vlist-s">​</span></span
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.3552em"
+                            ><span></span></span></span></span></span></span
+                  ><span class="mopen">(</span
+                  ><span class="mord"
+                    ><span class="mord mathnormal">c</span
+                    ><span class="msupsub"
+                      ><span class="vlist-t vlist-t2"
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.3117em"
+                            ><span
+                              style="
+                                top: -2.55em;
+                                margin-left: 0em;
+                                margin-right: 0.05em;
+                              "
+                              ><span class="pstrut" style="height: 2.7em"></span
+                              ><span class="sizing reset-size6 size3 mtight"
+                                ><span class="mord mathnormal mtight"
+                                  >i</span
+                                ></span
+                              ></span
+                            ></span
+                          ><span class="vlist-s">​</span></span
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.15em"
+                            ><span></span></span></span></span></span></span
+                  ><span class="mclose">)</span
+                  ><span class="mspace" style="margin-right: 0.2222em"></span
+                  ><span class="mbin">+</span
+                  ><span class="mspace" style="margin-right: 0.2222em"></span
+                  ><span class="mord"
+                    ><span class="mord">1</span
+                    ><span class="msupsub"
+                      ><span class="vlist-t vlist-t2"
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.3448em"
+                            ><span
+                              style="
+                                top: -2.5198em;
+                                margin-left: 0em;
+                                margin-right: 0.05em;
+                              "
+                              ><span class="pstrut" style="height: 2.7em"></span
+                              ><span class="sizing reset-size6 size3 mtight"
+                                ><span class="mord mtight"
+                                  ><span class="mopen mtight">{</span
+                                  ><span class="mord mtight"
+                                    ><span class="mord mathnormal mtight"
+                                      >c</span
+                                    ><span class="msupsub"
+                                      ><span class="vlist-t vlist-t2"
+                                        ><span class="vlist-r"
+                                          ><span
+                                            class="vlist"
+                                            style="height: 0.3281em"
+                                            ><span
+                                              style="
+                                                top: -2.357em;
+                                                margin-left: 0em;
+                                                margin-right: 0.0714em;
+                                              "
+                                              ><span
+                                                class="pstrut"
+                                                style="height: 2.5em"
+                                              ></span
+                                              ><span
+                                                class="sizing reset-size3 size1 mtight"
+                                                ><span
+                                                  class="mord mathnormal mtight"
+                                                  >i</span
+                                                ></span
+                                              ></span
+                                            ></span
+                                          ><span class="vlist-s">​</span></span
+                                        ><span class="vlist-r"
+                                          ><span
+                                            class="vlist"
+                                            style="height: 0.143em"
+                                            ><span></span></span></span></span></span></span
+                                  ><span class="mrel mtight"
+                                    ><span class="mrel mtight"
+                                      ><span class="mord vbox mtight"
+                                        ><span class="thinbox mtight"
+                                          ><span class="rlap mtight"
+                                            ><span
+                                              class="strut"
+                                              style="
+                                                height: 0.8889em;
+                                                vertical-align: -0.1944em;
+                                              "
+                                            ></span
+                                            ><span class="inner"
+                                              ><span class="mord mtight"
+                                                ><span class="mrel mtight"
+                                                  ></span
+                                                ></span
+                                              ></span
+                                            ><span
+                                              class="fix"
+                                            ></span></span></span></span></span
+                                    ><span class="mrel mtight">=</span></span
+                                  ><span class="mord amsrm mtight">∅</span
+                                  ><span class="mclose mtight">}</span></span
+                                ></span
+                              ></span
+                            ></span
+                          ><span class="vlist-s">​</span></span
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.3552em"
+                            ><span></span></span></span></span></span></span
+                  ><span class="mord"
+                    ><span class="mord mathcal">L</span
+                    ><span class="msupsub"
+                      ><span class="vlist-t vlist-t2"
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.3361em"
+                            ><span
+                              style="
+                                top: -2.55em;
+                                margin-left: 0em;
+                                margin-right: 0.05em;
+                              "
+                              ><span class="pstrut" style="height: 2.7em"></span
+                              ><span class="sizing reset-size6 size3 mtight"
+                                ><span class="mord mtight"
+                                  ><span class="mord text mtight"
+                                    ><span class="mord mtight">box</span></span
+                                  ></span
+                                ></span
+                              ></span
+                            ></span
+                          ><span class="vlist-s">​</span></span
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.15em"
+                            ><span></span></span></span></span></span></span
+                  ><span class="mopen">(</span
+                  ><span class="mord"
+                    ><span class="mord mathnormal">b</span
+                    ><span class="msupsub"
+                      ><span class="vlist-t vlist-t2"
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.3117em"
+                            ><span
+                              style="
+                                top: -2.55em;
+                                margin-left: 0em;
+                                margin-right: 0.05em;
+                              "
+                              ><span class="pstrut" style="height: 2.7em"></span
+                              ><span class="sizing reset-size6 size3 mtight"
+                                ><span class="mord mathnormal mtight"
+                                  >i</span
+                                ></span
+                              ></span
+                            ></span
+                          ><span class="vlist-s">​</span></span
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.15em"
+                            ><span></span></span></span></span></span></span
+                  ><span class="mpunct">,</span
+                  ><span class="mspace" style="margin-right: 0.1667em"></span
+                  ><span class="mord"
+                    ><span class="mord accent"
+                      ><span class="vlist-t"
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.9579em"
+                            ><span style="top: -3em"
+                              ><span class="pstrut" style="height: 3em"></span
+                              ><span class="mord mathnormal">b</span></span
+                            ><span style="top: -3.2634em"
+                              ><span class="pstrut" style="height: 3em"></span
+                              ><span class="accent-body" style="left: -0.25em"
+                                ><span class="mord">^</span></span
+                              ></span
+                            ></span
+                          ></span
+                        ></span
+                      ></span
+                    ><span class="msupsub"
+                      ><span class="vlist-t vlist-t2"
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.3448em"
+                            ><span
+                              style="
+                                top: -2.5198em;
+                                margin-left: 0em;
+                                margin-right: 0.05em;
+                              "
+                              ><span class="pstrut" style="height: 2.7em"></span
+                              ><span class="sizing reset-size6 size3 mtight"
+                                ><span class="mord mtight"
+                                  ><span class="mord accent mtight"
+                                    ><span class="vlist-t"
+                                      ><span class="vlist-r"
+                                        ><span
+                                          class="vlist"
+                                          style="height: 0.6944em"
+                                          ><span style="top: -2.7em"
+                                            ><span
+                                              class="pstrut"
+                                              style="height: 2.7em"
+                                            ></span
+                                            ><span
+                                              class="mord mathnormal mtight"
+                                              style="margin-right: 0.03588em"
+                                              >σ</span
+                                            ></span
+                                          ><span style="top: -2.7em"
+                                            ><span
+                                              class="pstrut"
+                                              style="height: 2.7em"
+                                            ></span
+                                            ><span
+                                              class="accent-body"
+                                              style="left: -0.25em"
+                                              ><span class="mord mtight"
+                                                >^</span
+                                              ></span
+                                            ></span
+                                          ></span
+                                        ></span
+                                      ></span
+                                    ></span
+                                  ><span class="mopen mtight">(</span
+                                  ><span class="mord mathnormal mtight">i</span
+                                  ><span class="mclose mtight">)</span></span
+                                ></span
+                              ></span
+                            ></span
+                          ><span class="vlist-s">​</span></span
+                        ><span class="vlist-r"
+                          ><span class="vlist" style="height: 0.3552em"
+                            ><span></span></span></span></span></span></span
+                  ><span class="mclose">)</span
+                  ><span class="mclose delimcenter" style="top: 0em"
+                    ><span class="delimsizing size2">]</span></span
+                  ></span
+                ></span
+              ></span
+            ></span
+          ></span
+        >
+      </p>
+      <p>
+        分类损失使用负对数似然（<span class="katex"
+          ><span class="katex-mathml"
+            ><math xmlns="http://www.w3.org/1998/Math/MathML"
+              ><semantics
+                ><mrow
+                  ><mo>−</mo><mi>log</mi><mo>⁡</mo
+                  ><mover accent="true"><mi>p</mi><mo>^</mo></mover></mrow
+                ><annotation encoding="application/x-tex"
+                  >-\log \hat{p}</annotation
+                ></semantics
+              ></math
+            ></span
+          ><span class="katex-html" aria-hidden="true"
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 0.8889em; vertical-align: -0.1944em"
+              ></span
+              ><span class="mord">−</span
+              ><span class="mspace" style="margin-right: 0.1667em"></span
+              ><span class="mop"
+                >lo<span style="margin-right: 0.01389em">g</span></span
+              ><span class="mspace" style="margin-right: 0.1667em"></span
+              ><span class="mord accent"
+                ><span class="vlist-t vlist-t2"
+                  ><span class="vlist-r"
+                    ><span class="vlist" style="height: 0.6944em"
+                      ><span style="top: -3em"
+                        ><span class="pstrut" style="height: 3em"></span
+                        ><span class="mord mathnormal">p</span></span
+                      ><span style="top: -3em"
+                        ><span class="pstrut" style="height: 3em"></span
+                        ><span class="accent-body" style="left: -0.1667em"
+                          ><span class="mord">^</span></span
+                        ></span
+                      ></span
+                    ><span class="vlist-s">​</span></span
+                  ><span class="vlist-r"
+                    ><span class="vlist" style="height: 0.1944em"
+                      ><span></span></span></span></span></span></span></span></span
+        >），增强错误分类的惩罚。<br />
+        对
+        <span class="katex"
+          ><span class="katex-mathml"
+            ><math xmlns="http://www.w3.org/1998/Math/MathML"
+              ><semantics
+                ><mrow
+                  ><msub><mi>c</mi><mi>i</mi></msub
+                  ><mo>=</mo><mi mathvariant="normal">∅</mi></mrow
+                ><annotation encoding="application/x-tex"
+                  >c_i = \varnothing</annotation
+                ></semantics
+              ></math
+            ></span
+          ><span class="katex-html" aria-hidden="true"
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 0.5806em; vertical-align: -0.15em"
+              ></span
+              ><span class="mord"
+                ><span class="mord mathnormal">c</span
+                ><span class="msupsub"
+                  ><span class="vlist-t vlist-t2"
+                    ><span class="vlist-r"
+                      ><span class="vlist" style="height: 0.3117em"
+                        ><span
+                          style="
+                            top: -2.55em;
+                            margin-left: 0em;
+                            margin-right: 0.05em;
+                          "
+                          ><span class="pstrut" style="height: 2.7em"></span
+                          ><span class="sizing reset-size6 size3 mtight"
+                            ><span class="mord mathnormal mtight">i</span></span
+                          ></span
+                        ></span
+                      ><span class="vlist-s">​</span></span
+                    ><span class="vlist-r"
+                      ><span class="vlist" style="height: 0.15em"
+                        ><span></span></span></span></span></span></span
+              ><span class="mspace" style="margin-right: 0.2778em"></span
+              ><span class="mrel">=</span
+              ><span class="mspace" style="margin-right: 0.2778em"></span></span
+            ><span class="base"
+              ><span
+                class="strut"
+                style="height: 0.6633em; vertical-align: -0.0817em"
+              ></span
+              ><span class="mord amsrm">∅</span></span
+            ></span
+          ></span
+        >
+        的损失项降权（因子 10），缓解类别不平衡。<br />
+        对边界框损失，组合 L1 损失与 GIoU 损失，解决尺度敏感问题。
+      </p>
+      <h3 id="detr-的架构">DETR 的架构</h3>
+      <p>
+        <img src="../images/DETR.png" alt="DETR" /><br />
+        CNN 作为 backbone 提取特征图，和 positional encoding 一起输入
+        Transformer encoder，再流入 Transformer decoder。DETR 的 Transformer
+        decoder 并不使用 Mask。
+      </p>
+      <p>Decoder 的输入是 N 个可学习的 object queries。有以下特征：</p>
+      <ol>
+        <li>无序（顺序不敏感，变化顺序不会改变语义）</li>
+        <li>
+          独特语义（单个 object query 的语义独特，不同的 object query
+          会关注不同的目标）<br />
+          同时，Cross-Attention 也让不同的 queries
+          之间相互关注，让它们不会重复预测。<br />
+          （它的地位类似于 RPN）
+        </li>
+      </ol>
+      <p>
+        后续，Decoder 得到的信息会通过以下的 FFN
+        被转化为携带类别信息的边界框预测。
+      </p>
+      <p>
+        <strong>FFN</strong>（Prediction Feed-Forward
+        Networks）是输出检测结果的模块，将 Decoder 的输出转化为具体结果。<br />
+        三层感知机输出归一化的边界框坐标，单独的线性层输出类别概率。
+      </p>
+      <p>
+        这里很特别的是，传统检测头是预测偏移，而 FFN
+        直接得到绝对坐标。传统检测头通过 NMS 去冗余，而 FFN
+        直接用二分图匹配去冗余。
+      </p>
+      <h2 id="不足">不足</h2>
+      <p>DETR 的劣势很明显：</p>
+      <ol>
+        <li>
+          对小目标不敏感（单尺度）<br />
+          原因：encoder
+          输入的时候进行下采样，细节丢失严重；全局的注意力难以捕捉小目标。
+        </li>
+        <li>
+          训练周期长，难以收敛<br />
+          原因：transformer 就是这样的；匈牙利算法训练初期不稳定（因为 object
+          queries 的随机性），收敛更慢。
+        </li>
+        <li>
+          贵<br />
+          原因：transformer 就是这样的。
+        </li>
+        <li>
+          N 需要手动定义固定数量，而且需要远大于目标数，导致大量的<span
+            class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow><mi mathvariant="normal">∅</mi></mrow
+                  ><annotation encoding="application/x-tex"
+                    >\empty</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 0.8056em; vertical-align: -0.0556em"
+                ></span
+                ><span class="mord">∅</span></span
+              ></span
+            ></span
+          >被浪费。
+        </li>
+        <li>位置编码和传统文本 Transformer 一样，可能对某些特殊目标不靠谱。</li>
+        <li>损失函数仍然有分类和回归损失的超参数，调整敏感。</li>
+      </ol>
+      <p>
+        DETR 的局限性很强。遥感等场景下，我们仍然广泛使用 R-CNN 这种传统架构。
+      </p>
+    </div>
+  </body>
+</html>
