@@ -4,9 +4,9 @@ import os
 file_path = r'index.html'
 
 # 新条目信息
-name = 'FCOS'
-show_name = 'FCOS'
-id = 5
+name = 'DETR'
+show_name = 'DETR'
+id = 6
 
 
 url = f'https://mingqian-233.github.io/CV-Notes/notes/{id}.%20{name}.html'

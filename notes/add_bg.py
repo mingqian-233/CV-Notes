@@ -1,8 +1,8 @@
 import os
 
 # 定义文件路径
-file_name='5. FCOS.html'
-pic_name='bg_5.jpeg'
+file_name='6. DETR.html'
+pic_name='bg_6.jpeg'
 
 
 
