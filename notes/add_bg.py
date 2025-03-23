@@ -1,11 +1,30 @@
 import os
+import re
 
-# 定义文件路径
-file_name='6. DETR.html'
-pic_name='bg_6.jpeg'
+max_id = 0
+max_filename = ''
+for filename in os.listdir('.'):
+    match = re.match(r'(\d+)\.\s*(.*)\.html', filename)
+    if match:
+        file_id = int(match.group(1))
+        if file_id > max_id:
+            max_id = file_id
+            max_filename = filename
 
+# 新条目信息
+file_name = max_filename
+pic_name = f'bg_{max_id}.jpeg'
 
+print(f'新图片：{pic_name}')
+print(f'文件名：{file_name}')
+input('按回车键继续...')
 
+# 检查是否已经存在该背景图片
+bg_exists = any(f'bg_{max_id}.jpeg' in line for line in open(file_name, 'r', encoding='utf-8'))
+if bg_exists:
+    print(f'背景图片 "bg_{max_id}.jpeg" 已存在于 {file_name} 中。')
+    exit()
+input('按回车键继续...')
 
 html_file_path =file_name
 css_file_path = '../background-code.css'
