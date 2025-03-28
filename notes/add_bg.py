@@ -17,14 +17,12 @@ pic_name = f'bg_{max_id}.jpeg'
 
 print(f'新图片：{pic_name}')
 print(f'文件名：{file_name}')
-input('按回车键继续...')
 
 # 检查是否已经存在该背景图片
 bg_exists = any(f'bg_{max_id}.jpeg' in line for line in open(file_name, 'r', encoding='utf-8'))
 if bg_exists:
     print(f'背景图片 "bg_{max_id}.jpeg" 已存在于 {file_name} 中。')
     exit()
-input('按回车键继续...')
 
 html_file_path =file_name
 css_file_path = '../background-code.css'

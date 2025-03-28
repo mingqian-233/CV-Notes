@@ -25,8 +25,6 @@ print(f'新条目：{id}. {show_name}')
 print(f'文件名：{id}. {name}.html')
 print(f'URL：notes/{id}.%20{name}.html')
 
-input('按回车键继续...') 
-
 url = f'https://mingqian-233.github.io/CV-Notes/notes/{id}.%20{name}.html'
 
 # 读取文件内容
@@ -40,7 +38,6 @@ if entry_exists:
     exit()
 
 
-input('按回车键继续...') 
 
 # 找到插入位置
 insert_index = None
@@ -69,7 +66,7 @@ lines.insert(last_h2_index + 1, f'      <h2 id="{id}">\n')
 lines.insert(last_h2_index + 2, f'        {id}.\n')
 lines.insert(last_h2_index + 3, f'        <a href="{url}">\n')
 lines.insert(last_h2_index + 4, f'          {show_name}</a>\n')
-lines.insert(last_h2_index + 5, f'        >\n')
+lines.insert(last_h2_index + 5, f'        \n')
 lines.insert(last_h2_index + 6, f'      </h2>\n')
 
 # 写回文件，覆盖原内容
